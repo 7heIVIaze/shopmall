@@ -4,15 +4,14 @@
   "description": "Shoppingmall",
   "author": "humming",
   "private": true,
-  "engine": {
+  "engines": {
     "node": "16.14.2",
     "npm": "8.5.0"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
-    "prestart": "nuxt build",
-    "start": "node server/index.js",
+    "start": "npm start",
     "heroku-postbuild": "npm run build",
     "generate": "nuxt generate"
   },
