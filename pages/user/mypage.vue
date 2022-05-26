@@ -313,9 +313,9 @@ export default {
 
     async userAddressSubmit(userName, userNumber, zonecode, RoadAddress, detailAddress){
       if(!userName) alert('수령인명을 입력해주세요')
-      if(!userNumber) alert('전화번호를 입력해주세요')
-      if(!zonecode) alert('주소를 입력해주세요')
-      if(!detailAddress) alert('상세주소를 입력해주세요')
+      else if(!userNumber) alert('전화번호를 입력해주세요')
+      else if(!zonecode) alert('주소를 입력해주세요')
+      else if(!detailAddress) alert('상세주소를 입력해주세요')
       else{
         alert(detailAddress)
         let { status } = await this.$axios.put('/api/user/add-address', { userIndex: this.userInfo.userIndex, userNameInput: userName, userNumberInput: userNumber, userZonecodeInput: zonecode, userRoadAddressInput: RoadAddress, userDetailAddressInput: detailAddress} )
