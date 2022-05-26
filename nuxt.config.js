@@ -48,6 +48,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}`}]
   ],
   /*
   ** Axios module configuration
