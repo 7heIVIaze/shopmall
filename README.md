@@ -1,6 +1,9 @@
-# 다모아 쇼핑몰
+# 딱맞아 쇼핑몰
 
 > Nuxt를 이용한 서버사이드 렌더링 쇼핑몰 제작 프로젝트
+
+> 기본적인 틀은 https://github.com/hummingengineer/nuxt_damoa_shoppingmall 에서 참고하였습니다.
+
 
 ## Used
 - node.js
