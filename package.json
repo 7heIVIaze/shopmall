@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
-    "start": "npm start",
+    "start": "nuxt start",
     "heroku-postbuild": "npm run build",
     "generate": "nuxt generate"
   },
