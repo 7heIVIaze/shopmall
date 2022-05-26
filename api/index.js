@@ -4,7 +4,7 @@ require('dotenv').config()
 
 // mongoose
 const mongoose = require('mongoose');
-mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if (err) return console.error(err)
   console.log('mongoose connected!')
 });
