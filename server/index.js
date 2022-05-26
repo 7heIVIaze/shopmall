@@ -11,7 +11,10 @@ async function start () {
   // Init Nuxt.js
   const nuxt = new Nuxt(config)
 
-  const { host, port } = nuxt.options.server
+  //const { host, port } = nuxt.options.server
+
+  var port = process.env.NODE_ENV || 80;
+  var host = process.env.NODE_ENV || '0.0.0.0';
 
   // Build only in dev mode
   if (config.dev) {
