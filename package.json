@@ -1,5 +1,5 @@
 {
-  "name": "shopmall",
+  "name": "justrightshopmall",
   "version": "1.0.0",
   "description": "> Nuxt를 이용한 서버사이드 렌더링 쇼핑몰 제작 프로젝트",
   "main": "nuxt.config.js",
