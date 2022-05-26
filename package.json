@@ -13,7 +13,7 @@
     "build": "nuxt build",
     "prestart": "nuxt build",
     "start": "nuxt start -p $PORT",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "npm run dev",
     "generate": "nuxt generate"
   },
   "dependencies": {
