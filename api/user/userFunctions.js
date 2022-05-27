@@ -14,7 +14,6 @@ userFunctions.userIdDuplicationCheck = async function(userId, res){
       if(err) console.log('userIdDuplicationCheck function error')
       else if(!doc) res.sendStatus(200)  // 등록된 아이디 없음. 아이디 쓸 수 있음.
       else if(doc) res.sendStatus(202)  // 유저 아이디 이미 존재.
-      console.log(res.headersSent)
     }).clone().catch(e => { console.log(e) })
   }
 }
