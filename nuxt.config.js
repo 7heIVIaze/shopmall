@@ -62,7 +62,7 @@ module.exports = {
 
   // proxy: {
   //   "/api/": {
-  //       "target": "http://localhost:8080/",
+  //       "target": "http://192.168.0.6:8080",
   //       "secure": false,
   //       "changeOrigin": true
   //   }
