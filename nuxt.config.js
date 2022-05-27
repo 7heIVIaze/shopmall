@@ -48,6 +48,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/proxy',
     ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}`, systemvars: true }]
   ],
   /*
@@ -55,7 +56,17 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    proxyHeaders: false,
+    credentials: true,
   },
+
+  // proxy: {
+  //   "/api/": {
+  //       "target": "http://localhost:8080/",
+  //       "secure": false,
+  //       "changeOrigin": true
+  //   }
+  // },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -110,6 +121,8 @@ module.exports = {
 
     // Will register file from project api directory to handle /api/* requires
     { path: '/api', handler: '~/api/index.js' },
-  ]
+
+  ],
+
 
 }

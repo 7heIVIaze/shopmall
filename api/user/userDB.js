@@ -2,6 +2,14 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 
 // 스키마
+const AddressSchema = new mongoose.Schema({
+  userName: { type: String, default: ''},
+  userNumber: { type: String, default: ''},
+  userZonecode: { type: String, default: ''},
+  userRoadAddress: { type: String, default: ''},
+  userDetailAddress: { type: String, default: ''},
+})
+
 const UserSchema = new mongoose.Schema({
   userAvatar: { type: String, default: 'default.png' },
   userId: { type: String, required: true, unique: true, default: '' },
@@ -12,11 +20,7 @@ const UserSchema = new mongoose.Schema({
   userCarts: { type: Array, default: '' },
   userBuyHistory: { type:Array, default: '' },
   administrator: { type: Boolean, default: false },
-  userName: { type: String, default: ''},
-  userNumber: { type: String, default: ''},
-  userZonecode: { type: String, default: ''},
-  userRoadAddress: { type: String, default: ''},
-  userDetailAddress: { type: String, default: ''},
+  userAddress: AddressSchema,
 })
 
 UserSchema
