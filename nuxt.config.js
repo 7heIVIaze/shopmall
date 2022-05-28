@@ -58,6 +58,12 @@ module.exports = {
   axios: {
     proxyHeaders: false,
     credentials: true,
+    method: "GET",
+    url: `https://cors-anywhere.herokuapp.com/https://api.dropper.tech/covid19/status/korea?
+    locale=${city}`,
+    headers: {
+    'APIKey': COVID_APIKEY,
+    },
   },
 
   // proxy: {
