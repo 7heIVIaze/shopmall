@@ -18,7 +18,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://justright-shop.herokuapp.com")
+  res.header("Access-Control-Allow-Origin", "*")
   //res.header("Access-Control-Allow-Origin", "https://192.168.0.6:8080")
   res.header('Access-Control-Allow-Credentials', true)
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT ,DELETE")
