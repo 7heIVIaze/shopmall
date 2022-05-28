@@ -1,4 +1,4 @@
-import createPersistedState from "veux-persistedstate"
+import createPersistedState from "vuex-persistedstate"
 import * as Cookies from "js-cookie"
 import cookie from "cookie"
 import { Cookie } from "express-session"
@@ -21,7 +21,7 @@ export default ( {store, req }) => {
             setItem: (key, value) => {
                 Cookies.set(key, value, { expires: 365, secure: false })
             },
-            
+
             removeItem: (key) => Cookies.remove(key)
         }
     })(store)
