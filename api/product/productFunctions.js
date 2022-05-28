@@ -41,7 +41,7 @@ productFunctions.deleteProduct = async function(productCode, res){
       }
       res.sendStatus(200)
     }
-  })
+  }).clone()
 }
 
 // 페이지 나누기
@@ -49,7 +49,7 @@ productFunctions.paginateProduct = async function(req, res){
   let page = req.query.page || 1                                 // 쿼리스트링에 page가 없으면 1을 사용. 처음 시작이 1페이지.
   let limit = 5                                                  // 한 번에 띄워줄 데이터의 개수
   let offset = page * limit                                      // 얼마나 떨어져 있는지
-  let pageProducts = await ProductModel.find({}).skip(offset - limit).limit(limit).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').catch(e => console.log('paginateProduct function error'))
+  let pageProducts = await ProductModel.find({}).skip(offset - limit).limit(limit).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').clone().catch(e => console.log('paginateProduct function error'))
   for(let i of pageProducts){
     i.productImgs = await thumbnailDataURI_generator(i.productCode).catch(e => console.log('paginateProduct dataURI generator function error'))
   }
@@ -77,13 +77,13 @@ async function thumbnailDataURI_generator(productCode){
 
 // 세션 유저가 찜한 상품들의 정보 응답
 productFunctions.favoriteProductInfo = async function(userIndex, res){
-  let doc = await UserModel.findById(userIndex)
+  let doc = await UserModel.findById(userIndex).clone()
   let userFavorites = doc.userFavorites
   let favoriteProducts = []
   if(!userFavorites || userFavorites.length === 0) res.sendStatus(202)  // 찜한 상품이 없을 경우 []. null이 아닌 length=0 상태.
   else{
     for(let i of userFavorites){
-      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productCode')
+      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productCode').clone()
       found.productImgs = await thumbnailDataURI_generator(found.productCode)
       favoriteProducts.push(found)
     }
@@ -93,13 +93,13 @@ productFunctions.favoriteProductInfo = async function(userIndex, res){
 
 // 세션 유저가 담아놓은 장바구니 상품들의 정보 응답
 productFunctions.cartProductInfo = async function(userIndex, res){
-  let doc = await UserModel.findById(userIndex)
+  let doc = await UserModel.findById(userIndex).clone()
   let userCarts = doc.userCarts
   let cartProducts = []
   if(!userCarts || userCarts.length === 0) res.sendStatus(202)
   else{
     for(let i of userCarts){
-      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productPrice productCode')
+      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productPrice productCode').clone()
       found.productImgs = await thumbnailDataURI_generator(found.productCode)
       cartProducts.push(found)
     }
@@ -109,7 +109,7 @@ productFunctions.cartProductInfo = async function(userIndex, res){
 
 // 상품 검색
 productFunctions.searchProduct = async function(searchInput, res){
-  let found = await ProductModel.find().or([ {productHashTag: searchInput}, {productTitle: RegExp(searchInput, 'g')} ]).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').catch(e => console.log('searchProduct Function error'))
+  let found = await ProductModel.find().or([ {productHashTag: searchInput}, {productTitle: RegExp(searchInput, 'g')} ]).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').clone().catch(e => console.log('searchProduct Function error'))
   if(!found) res.sendStatus(202)
   else{
     for(let i of found) i.productImgs = await thumbnailDataURI_generator(i.productCode).catch(e => console.log('searchProduct function dataURI error'))
@@ -120,8 +120,8 @@ productFunctions.searchProduct = async function(searchInput, res){
 // 상품 상세 페이지
 productFunctions.detailProduct = async function(productCode, res, userIndex){
   if(userIndex){
-    let userDoc = await UserModel.findById(userIndex).catch(e => console.log('detailProduct user findById error'))
-    let productDoc = await ProductModel.findOne({productCode: productCode}).catch(e => console.log('detailProduct product findOne error'))
+    let userDoc = await UserModel.findById(userIndex).clone().catch(e => console.log('detailProduct user findById error'))
+    let productDoc = await ProductModel.findOne({productCode: productCode}).clone().catch(e => console.log('detailProduct product findOne error'))
     if(userDoc.userFavorites && userDoc.userFavorites.length !== 0) for(let i of userDoc.userFavorites) if(productDoc.productCode === i) productDoc.productHeartColor = 'red'
     if(userDoc.userCarts && userDoc.userCarts.length !== 0) for(let j of userDoc.userCarts) if(productDoc.productCode === j) productDoc.productCartColor = 'red'
     productDoc.productImgs = await dataURI_generator(productDoc.productCode)
@@ -135,7 +135,7 @@ productFunctions.detailProduct = async function(productCode, res, userIndex){
         doc.productImgs = await dataURI_generator(doc.productCode)
         res.status(200).json(doc)
       }
-    })
+    }).clone()
   }
 }
 
@@ -155,13 +155,13 @@ async function getUserAvatarDataURI(userAvatarImgName){
 
 // 세션 유저가 구매한 상품들의 정보 응답
 productFunctions.purchaseProductInfo = async function(userIndex, res){
-  let userDoc = await UserModel.findById(userIndex).catch(e=> console.log('purchaseProductInfo function error'))
+  let userDoc = await UserModel.findById(userIndex).clone().catch(e=> console.log('purchaseProductInfo function error'))
   let userBuyHistory = userDoc.userBuyHistory
   let purchasedHistoryProducts = []
   if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
   else{
     for(let i of userBuyHistory){
-      let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode')
+      let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode').clone()
       found.productImgs = await thumbnailDataURI_generator(found.productCode)
       found.productCode = i  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
       purchasedHistoryProducts.push(found)
@@ -176,7 +176,7 @@ async function findAllProduct_DB(){
   await ProductModel.find({}, function(err, docs){
     if(err) console.log('findAllProduct_DB function error')
     console.log(docs)
-  })
+  }).clone()
 }
 
 // dataURI 배열 생성
@@ -200,7 +200,7 @@ productFunctions.addCarousel = async function(productCode, res){
     if(err) console.log('addCarousel function error')
     else if(!result) res.sendStatus(202)
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 productFunctions.deleteCarousel = async function(productCode, res){
@@ -208,12 +208,12 @@ productFunctions.deleteCarousel = async function(productCode, res){
     if(err) console.log('deleteCarousel function error')
     else if(!result) res.sendStatus(202)
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 // 추천 상품(Carousel) 정보 응답
 productFunctions.getCarousel = async function(res){
-  let productDocs = await ProductModel.find({productCarousel: true}).select('productImgs productTitle productCode')
+  let productDocs = await ProductModel.find({productCarousel: true}).select('productImgs productTitle productCode').clone()
   for(let i of productDocs) i.productImgs = await thumbnailDataURI_generator(i.productCode)
   res.status(200).send(productDocs)
 }
@@ -224,7 +224,7 @@ productFunctions.reviseProductImage = async function(productCode, productImgs, r
     if(err) console.log('reviseProductImage function error')
     else if(!result) res.sendStatus(202)  // 일치하는 상품을 찾지 못했으면 result 값은 null
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 // 상품 타이틀 수정
@@ -233,7 +233,7 @@ productFunctions.reviseProductTitle = async function(productCode, productTitle, 
     if(err) console.log('reviseProductTitle function error')
     else if(!result) res.sendStatus(202)
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 // 상품 설명 수정
@@ -242,7 +242,7 @@ productFunctions.reviseProductDescription = async function(productCode, productD
     if(err) console.log('reviseProductDescription function error')
     else if(!result) res.sendStatus(202)
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 // 상품 가격 수정
@@ -252,7 +252,7 @@ productFunctions.reviseProductPrice = async function(productCode, productPrice, 
     if(err) console.log('reviseProductPrice function error')
     else if(!result) res.sendStatus(202)
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 // 상품 수량 수정
@@ -262,7 +262,7 @@ productFunctions.reviseProductQuantity = async function(productCode, productQuan
     if(err) console.log('reviseProductQuantity function error')
     else if(!result) res.sendStatus(202)
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 // 상품 해시태그 수정
@@ -271,7 +271,7 @@ productFunctions.reviseProductHashTag = async function(productCode, productHashT
     if(err) console.log('reviseProductHashTag function error')
     else if(!result) res.sendStatus(202)
     else res.sendStatus(200)
-  })
+  }).clone()
 }
 
 

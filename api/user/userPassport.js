@@ -9,6 +9,8 @@ passport.use(
       passwordField: 'userPwd',
     },
     function(username, password, done){
+      //console.log(usernameField + " " + passwordField)
+      console.log(username + " " + password)
       UserModel.findOne({ userId: username }, function (err, user){
         if(err) return done(err)
         if(!user){
@@ -24,11 +26,13 @@ passport.use(
 )
 
 passport.serializeUser(function(user, done){
+  console.log(user)
   done(null, user.id)
 })
 
 passport.deserializeUser(function(id, done){
   UserModel.findById(id, function(err, user){
+    console.log(user)
     done(err, user)
   })
 })

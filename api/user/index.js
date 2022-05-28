@@ -2,6 +2,7 @@ const router = require('express').Router()
 const userFunctions = require('./userFunctions')
 const passport = require('passport')
 const userUpload = require('./userMulter')
+const { cookie } = require('express/lib/response')
 
 // 회원가입
 router.get('/dupcheck', (req, res, next) => {
@@ -20,6 +21,7 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/api/user/login/fail'
 }))
 
+
 router.get('/login/success', (req, res, next) => {
   res.sendStatus(200)
 })
@@ -30,8 +32,13 @@ router.get('/login/fail', (req, res, next) => {
 
 // 로그아웃
 router.put('/logout', (req, res, next) => {
-  req.logout()  // 세션 삭제. 이후 req.user는 null이 된다.
-  res.sendStatus(200)
+  console.log(req.user)
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    req.session.destroy();
+    res.clearCookie('sid');
+    res.sendStatus(200)
+  });  // 세션 삭제. 이후 req.user는 null이 된다.
 })
 
 // 세션 체크
@@ -58,6 +65,7 @@ router.get('/session-userinfo', async (req, res, next) => {
 
 // 관리자 세션 체크
 router.get('/session-administrator', async(req, res, next) => {
+  console.log(req.user)
   if(req.user.administrator) res.sendStatus(200)
   else res.sendStatus(202)
 })

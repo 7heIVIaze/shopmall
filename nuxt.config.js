@@ -35,6 +35,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {
+      src: 'plugins/persistedState.js'
+    }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -57,7 +60,7 @@ module.exports = {
   */
   axios: {
     proxyHeaders: false,
-    credentials: true,
+    withCredentials: true,
   },
 
   // proxy: {
@@ -114,7 +117,6 @@ module.exports = {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: false,
         maxAge: 1000 * 60 * 60
       }
     }),

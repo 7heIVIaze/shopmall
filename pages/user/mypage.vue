@@ -317,7 +317,6 @@ export default {
       else if(!zonecode) alert('주소를 입력해주세요')
       else if(!detailAddress) alert('상세주소를 입력해주세요')
       else{
-        alert(detailAddress)
         let { status } = await this.$axios.put('/api/user/add-address', { userIndex: this.userInfo.userIndex, userNameInput: userName, userNumberInput: userNumber, userZonecodeInput: zonecode, userRoadAddressInput: RoadAddress, userDetailAddressInput: detailAddress} )
         if(status === 200) { this.userName = null; this.userNumber = null; this.zonecode = null; this.RoadAddress = null; this.detailAddress = null; this.userAddressDialog = false; window.location.reload(true); }
         else { this.userName = null; this.userNumber = null; this.zonecode = null; this.RoadAddress = null; this.detailAddress = null; alert('주소 저장 실패'); }

@@ -28,7 +28,7 @@ commentFunctions.getComment = async function(productCode, res){
       for(let i of docs) i.commentAvatar = await getUserAvatarDataURI(i.commentAvatar)
       res.send(docs)
     }
-  })
+  }).clone()
 }
 
 // 유저 프로필 이미지 DataURI 생성
