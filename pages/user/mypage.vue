@@ -390,11 +390,11 @@ export default {
       else {
         alert('잘못된 인증 번호입니다.')
       }
-    }
+    },
 
     chgAdminDialogClose() {
       this.chgAdminDialog = false
-    }
+    },
   }
 }
 </script>
