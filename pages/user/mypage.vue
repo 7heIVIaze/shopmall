@@ -179,30 +179,35 @@
         </v-container>
       </v-card>
       <v-fab-transition>
-        <v-btn bottom right fab fixed @click="chtAdminPopup.show(true)"><v-icon>mdi-shield-account</v-icon></v-btn>
+        <v-list-item>
+              <v-list-item-action>
+                <v-dialog v-model="chgAdminDialog" persistent max-width="600px">
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon v-on="on"><v-icon>mdi-shield-account</v-icon></v-btn>
+                  </template>
+                  <v-container>
+                    <v-card>
+                      <v-card-title><span class="headline">관리자 권한</span></v-card-title>
+                      <v-card-text>
+                        <v-row>
+                          <v-col>
+                            <v-text-field v-model="AdminNumberInput" label="관리자 인증 번호" outlined></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                      <v-card-actions>
+                        <div class="flex-grow-1"></div>
+                        <v-btn color="blue darken-1" text @click="chgAdminDialogClose">취소</v-btn>
+                        <v-btn color="blue darken-1" text @click="changeToAdmin(AdminNumberInput)">변경</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-container>
+                </v-dialog>
+              </v-list-item-action>
+            </v-list-item>
+            <v-divider />
       </v-fab-transition>
     </v-flex>
-
-    <wj-popup id="chtAdminPopup" :initialized="initForm">
-            <form @submit.prevent="onSubmit(chtAdminPopup)">
-                <h4 class="modal-header">
-                    관리자 변경
-                    <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
-                </h4>
-                <div class="modal-body">
-                    <label>
-                        관리자 번호:
-                        <input class="form-control" required type="AdminNum"/>
-                    </label>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="changeToAdmin">
-                        변환하기
-                    </button>
-                </div>
-            </form>
-        </wj-popup>
-
   </v-layout>
 </template>
 
@@ -222,20 +227,23 @@ export default {
   },
 
   data: () => ({
-    userAvatarInput: null,  // File type
-    userAvatarDialog: false,
-    userPwdInput: null,
-    userPwdDialog: false,
-    userName: null,
-    userNumber: null,
-    zonecode: null,
-    RoadAddress: null,
-    detailAddress: null,
-    userAddressDialog: false,
-    userMoneyInput: null,
-    userMoneyDialog: false,
-    deleteAccountDialog: false,
-  }),
+      userAvatarInput: null,  // File type
+      userAvatarDialog: false,
+      userPwdInput: null,
+      userPwdDialog: false,
+      userName: null,
+      userNumber: null,
+      zonecode: null,
+      RoadAddress: null,
+      detailAddress: null,
+      userAddressDialog: false,
+      userMoneyInput: null,
+      userMoneyDialog: false,
+      deleteAccountDialog: false,
+      AdminNumberInput: null,
+      chgAdminDialog: false,
+    }
+  ),
 
   methods: {
     async userAvatarSubmit(userAvatarInput){
@@ -370,10 +378,22 @@ export default {
     },
 
     async changeToAdmin(){
-      
-      let { status } = await this.$axios.put('/api/user/change-admin')
-      if(status === 200) { alert('관리자 계정으로 전환되었습니다'); window.location.reload(true); }
-      else { alert('이미 관리자 계정입니다') }
+      if (AdminNumberInput === process.env.ADMIN_NUM) {
+        let { status } = await this.$axios.put('/api/user/change-admin')
+        if(status === 200) {
+          this.chgAdminDialog = false
+          alert('관리자 계정으로 전환되었습니다')
+          window.location.reload(true)
+        }
+        else { alert('이미 관리자 계정입니다') }
+      }
+      else {
+        alert('잘못된 인증 번호입니다.')
+      }
+    }
+
+    chgAdminDialogClose() {
+      this.chgAdminDialog = false
     }
   }
 }
