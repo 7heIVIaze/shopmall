@@ -374,7 +374,7 @@ export default {
       this.deleteAccountDialog = false
     },
 
-    async changeToAdmin(){
+    async changeToAdmin(AdminNumberInput){
       if (AdminNumberInput === process.env.ADMIN_NUM) {
         let { status } = await this.$axios.put('/api/user/change-admin')
         if(status === 200) {
