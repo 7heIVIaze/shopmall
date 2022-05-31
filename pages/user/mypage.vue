@@ -376,7 +376,7 @@ export default {
 
     async changeToAdmin(AdminNumberInput){
       console.log(process.env.ADMIN_NUM)
-      if (AdminNumberInput === process.env.ADMIN_NUM) {
+      if (AdminNumberInput === 'admin1234!@#$') {
         let { status } = await this.$axios.put('/api/user/change-admin')
         if(status === 200) {
           this.chgAdminDialog = false
@@ -391,6 +391,7 @@ export default {
     },
 
     chgAdminDialogClose() {
+      this.AdminNumberInput = null
       this.chgAdminDialog = false
     },
   }
