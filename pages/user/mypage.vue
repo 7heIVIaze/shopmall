@@ -179,9 +179,30 @@
         </v-container>
       </v-card>
       <v-fab-transition>
-        <v-btn bottom right fab fixed @click="changeToAdmin"><v-icon>mdi-shield-account</v-icon></v-btn>
+        <v-btn bottom right fab fixed @click="chtAdminPopup.show(true)"><v-icon>mdi-shield-account</v-icon></v-btn>
       </v-fab-transition>
     </v-flex>
+
+    <wj-popup id="chtAdminPopup" :initialized="initForm">
+            <form @submit.prevent="onSubmit(chtAdminPopup)">
+                <h4 class="modal-header">
+                    관리자 변경
+                    <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
+                </h4>
+                <div class="modal-body">
+                    <label>
+                        관리자 번호:
+                        <input class="form-control" required type="AdminNum"/>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="changeToAdmin">
+                        변환하기
+                    </button>
+                </div>
+            </form>
+        </wj-popup>
+
   </v-layout>
 </template>
 
@@ -349,6 +370,7 @@ export default {
     },
 
     async changeToAdmin(){
+      
       let { status } = await this.$axios.put('/api/user/change-admin')
       if(status === 200) { alert('관리자 계정으로 전환되었습니다'); window.location.reload(true); }
       else { alert('이미 관리자 계정입니다') }
