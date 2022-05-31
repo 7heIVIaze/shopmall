@@ -54,6 +54,10 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    proxy: true,
+    withCredentials: true,
+    baseURL: `http://${process.env.HOST}:${process.env.PORT}`,
+    browserBaseURL: "https://justright-shop.herokuapp.com"
   },
   /*
   ** vuetify module configuration

@@ -15,13 +15,21 @@ router.post('/signup', (req, res, next) => {
 })
 
 // 로그인
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/api/user/login/success',
-  failureRedirect: '/api/user/login/fail'
-}))
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) { return next(err); }
+    if (!user) { return res.redirect('/login/fail') }
+    req.logIn(user, function (err) {
+        if (err) { return next(err) }
+        req.session.save(function () {
+            res.redirect('/login/success');
+        })
+    })
+  })(req, res, next)
+})
 
 router.get('/login/success', (req, res, next) => {
-  console.log(+req.session)
+  console.log(req.session)
   res.sendStatus(200)
 })
 
