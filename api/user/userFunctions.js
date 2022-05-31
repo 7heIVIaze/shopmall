@@ -14,7 +14,7 @@ userFunctions.userIdDuplicationCheck = async function(userId, res){
       if(err) console.log('userIdDuplicationCheck function error')
       else if(!doc) res.sendStatus(200)  // 등록된 아이디 없음. 아이디 쓸 수 있음.
       else if(doc) res.sendStatus(202)  // 유저 아이디 이미 존재.
-    }).clone().catch(e => { console.log(e) })
+    })
   }
 }
 
@@ -66,7 +66,7 @@ userFunctions.changeUserAvatarImg = async function(userIndex, userAvatarImgName,
   await UserModel.findByIdAndUpdate(userIndex, {userAvatar: userAvatarImgName}, function(err, doc){
     if(err) console.log('changeUserAvatarImg function error')
     else if(doc) res.sendStatus(200)
-  }).clone()
+  })
 }
 
 // 유저 비밀번호 변경
@@ -84,7 +84,7 @@ userFunctions.changeUserPwd = async function(userIndex, userPwdInput, res){
           else res.sendStatus(200)  // 비밀번호 변경 성공
         })
       }
-    }).clone()
+    })
   }
 }
 
@@ -106,7 +106,7 @@ userFunctions.addUserMoney = async function(userIndex, userMoneyInput, res){
           else res.sendStatus(200)  // 돈 충전 성공
         })
       }
-    }).clone()
+    })
   }
 }
 
@@ -134,10 +134,10 @@ userFunctions.addUserAddress = async function(userIndex, userZonecode, userRoadA
         doc.userDetailAddress = userDetailAddressTrimmed
         doc.save(function(err, created){
           if(err) console.log('addUserAddress function save error')
-          else res.sendStatus(200) 
+          else res.sendStatus(200)  // 비밀번호 변경 성공
         })
       }
-    }).clone()
+    })
   }
 }
 
@@ -147,11 +147,7 @@ userFunctions.deleteAccount = async function(userIndex, userAvatarimgNameWithout
   await UserModel.deleteOne({ _id: userIndex }, function(err){
     if(err) console.log('deleteAccount function error')
     else{
-      if(userAvatarimgNameWithoutExt === 'default') { req.logout(function(err) {
-        if (err) { return next(err); }
-        res.sendStatus(200)
-        });
-      }
+      if(userAvatarimgNameWithoutExt === 'default') { req.logout(); res.sendStatus(200); }
       else{
         if(fs.existsSync(dirPath)){
           fs.readdirSync(dirPath).forEach(function(fileName, index){
@@ -159,13 +155,11 @@ userFunctions.deleteAccount = async function(userIndex, userAvatarimgNameWithout
           })
           fs.rmdirSync(dirPath)
         }
-        req.logout(function(err) {
-          if (err) { return next(err); }
-          res.sendStatus(200)
-        })
+        req.logout()
+        res.sendStatus(200)
       }
     }
-  }).clone()
+  })
 }
 
 // 찜하기 추가
@@ -181,7 +175,7 @@ userFunctions.addFavorites = async function(userIndex, productCode, res){
         else res.sendStatus(200)
       })
     }
-  }).clone()
+  })
 }
 
 // 찜하기 삭제
@@ -197,7 +191,7 @@ userFunctions.deleteFavorites = async function(userIndex, productCode, res){
         else res.sendStatus(200)
       })
     }
-  }).clone()
+  })
 }
 
 // 장바구니 추가
@@ -213,7 +207,7 @@ userFunctions.addCarts = async function(userIndex, productCode, res){
         else res.sendStatus(200)
       })
     }
-  }).clone()
+  })
 }
 
 // 장바구니 삭제
@@ -229,14 +223,14 @@ userFunctions.deleteCarts = async function(userIndex, productCode, res){
         else res.sendStatus(200)
       })
     }
-  }).clone()
+  })
 }
 
 // 물건 구입
 userFunctions.buyProduct = async function(userIndex, productCode, productPrice, buyQuantity, res){
   let bill = Number(productPrice) * Number(buyQuantity)
-  let userDoc = await UserModel.findById(userIndex).clone()
-  let productDoc = await ProductModel.findOne({productCode: productCode.substring(0, productCode.indexOf('_'))}).clone()
+  let userDoc = await UserModel.findById(userIndex)
+  let productDoc = await ProductModel.findOne({productCode: productCode.substring(0, productCode.indexOf('_'))})
   if(userDoc.userMoney < bill) res.sendStatus(202)  // 유저의 돈 부족
   else if(productDoc.productQuantity < buyQuantity) res.sendStatus(203)  // 상품의 재고 부족
   else{
@@ -251,7 +245,7 @@ userFunctions.buyProduct = async function(userIndex, productCode, productPrice, 
 // 장바구니에 담긴 물건 모두 구입
 userFunctions.buyAllProduct = async function(userIndex, productCodeList, sum, res){
   let bill = Number(sum)
-  let userDoc = await UserModel.findById(userIndex).clone()
+  let userDoc = await UserModel.findById(userIndex)
   if(userDoc.userMoney < bill) res.sendStatus(202)
   else if(await checkQuantity(productCodeList) === false) res.sendStatus(203)
   else{
@@ -271,7 +265,7 @@ userFunctions.buyAllProduct = async function(userIndex, productCodeList, sum, re
 // 상품번호들 중 재고 부족한 게 있는지 검사
 async function checkQuantity(productCodeList){
   for(let productCode of productCodeList){
-    let productDoc = await ProductModel.findOne({productCode: productCode.substring(0, productCode.indexOf('_'))}).clone()
+    let productDoc = await ProductModel.findOne({productCode: productCode.substring(0, productCode.indexOf('_'))})
     if(productDoc.productQuantity < 1) return false
   }
   return true

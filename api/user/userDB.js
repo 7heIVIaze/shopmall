@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 
 // 스키마
-
 const UserSchema = new mongoose.Schema({
   userAvatar: { type: String, default: 'default.png' },
   userId: { type: String, required: true, unique: true, default: '' },

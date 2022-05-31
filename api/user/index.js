@@ -2,7 +2,6 @@ const router = require('express').Router()
 const userFunctions = require('./userFunctions')
 const passport = require('passport')
 const userUpload = require('./userMulter')
-const { cookie } = require('express/lib/response')
 
 // 회원가입
 router.get('/dupcheck', (req, res, next) => {
@@ -21,8 +20,8 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/api/user/login/fail'
 }))
 
-
 router.get('/login/success', (req, res, next) => {
+  console.log(+req.session)
   res.sendStatus(200)
 })
 
@@ -32,17 +31,16 @@ router.get('/login/fail', (req, res, next) => {
 
 // 로그아웃
 router.put('/logout', (req, res, next) => {
-  console.log(req.user)
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    req.session.destroy();
-    res.clearCookie('sid');
-    res.sendStatus(200)
-  });  // 세션 삭제. 이후 req.user는 null이 된다.
+  req.logout()  // 세션 삭제. 이후 req.user는 null이 된다.
+  req.session.save((err) => {
+    if(err) throw err
+  })
+  res.sendStatus(200)
 })
 
 // 세션 체크
 router.get('/session-check', (req, res, next) => {
+  console.log('/session-check: ', req.user)
   if(req.user) res.sendStatus(200)  // 로그인되어 있을 경우.
   else res.sendStatus(202)
 })
@@ -65,7 +63,7 @@ router.get('/session-userinfo', async (req, res, next) => {
 
 // 관리자 세션 체크
 router.get('/session-administrator', async(req, res, next) => {
-  console.log(req.user)
+  console.log('/session-administrator: ', req.user)
   if(req.user.administrator) res.sendStatus(200)
   else res.sendStatus(202)
 })
@@ -153,5 +151,25 @@ router.put('/change-admin', (req, res, next) => {
 
   userFunctions.changeToAdmin(userIndex, admin, res)
 })
+
+// module.exports = {
+//   isOwner: function (req, res) {
+//     console.log(req.user)
+//     if(req.user == true) {
+//       return true
+//     }
+//     else {
+//       return false
+//     }
+//   },
+//   statusUI: function (req, res) {
+//     var authStatusUI = '/login'
+//     if(this.isOwner(req, res)) {
+//       console.log(req.session.id)
+//       authStatusUI = `${req.session.id} | /login`
+//     }
+//     return authStatusUI
+//   }
+// }
 
 module.exports = router

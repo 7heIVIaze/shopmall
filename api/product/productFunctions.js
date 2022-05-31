@@ -49,7 +49,7 @@ productFunctions.paginateProduct = async function(req, res){
   let page = req.query.page || 1                                 // 쿼리스트링에 page가 없으면 1을 사용. 처음 시작이 1페이지.
   let limit = 5                                                  // 한 번에 띄워줄 데이터의 개수
   let offset = page * limit                                      // 얼마나 떨어져 있는지
-  let pageProducts = await ProductModel.find({}).skip(offset - limit).limit(limit).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').clone().catch(e => console.log('paginateProduct function error'))
+  let pageProducts = await ProductModel.find({}).skip(offset - limit).limit(limit).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').catch(e => console.log('paginateProduct function error'))
   for(let i of pageProducts){
     i.productImgs = await thumbnailDataURI_generator(i.productCode).catch(e => console.log('paginateProduct dataURI generator function error'))
   }
@@ -83,7 +83,7 @@ productFunctions.favoriteProductInfo = async function(userIndex, res){
   if(!userFavorites || userFavorites.length === 0) res.sendStatus(202)  // 찜한 상품이 없을 경우 []. null이 아닌 length=0 상태.
   else{
     for(let i of userFavorites){
-      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productCode').clone()
+      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productCode')
       found.productImgs = await thumbnailDataURI_generator(found.productCode)
       favoriteProducts.push(found)
     }
@@ -99,7 +99,7 @@ productFunctions.cartProductInfo = async function(userIndex, res){
   if(!userCarts || userCarts.length === 0) res.sendStatus(202)
   else{
     for(let i of userCarts){
-      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productPrice productCode').clone()
+      let found = await ProductModel.findOne({productCode: i}).select('productImgs productTitle productPrice productCode')
       found.productImgs = await thumbnailDataURI_generator(found.productCode)
       cartProducts.push(found)
     }
@@ -109,7 +109,7 @@ productFunctions.cartProductInfo = async function(userIndex, res){
 
 // 상품 검색
 productFunctions.searchProduct = async function(searchInput, res){
-  let found = await ProductModel.find().or([ {productHashTag: searchInput}, {productTitle: RegExp(searchInput, 'g')} ]).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').clone().catch(e => console.log('searchProduct Function error'))
+  let found = await ProductModel.find().or([ {productHashTag: searchInput}, {productTitle: RegExp(searchInput, 'g')} ]).select('productImgs productTitle productPrice productCode productHeartColor productCartColor').catch(e => console.log('searchProduct Function error'))
   if(!found) res.sendStatus(202)
   else{
     for(let i of found) i.productImgs = await thumbnailDataURI_generator(i.productCode).catch(e => console.log('searchProduct function dataURI error'))
@@ -161,7 +161,7 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
   if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
   else{
     for(let i of userBuyHistory){
-      let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode').clone()
+      let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode')
       found.productImgs = await thumbnailDataURI_generator(found.productCode)
       found.productCode = i  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
       purchasedHistoryProducts.push(found)
@@ -213,7 +213,7 @@ productFunctions.deleteCarousel = async function(productCode, res){
 
 // 추천 상품(Carousel) 정보 응답
 productFunctions.getCarousel = async function(res){
-  let productDocs = await ProductModel.find({productCarousel: true}).select('productImgs productTitle productCode').clone()
+  let productDocs = await ProductModel.find({productCarousel: true}).select('productImgs productTitle productCode')
   for(let i of productDocs) i.productImgs = await thumbnailDataURI_generator(i.productCode)
   res.status(200).send(productDocs)
 }

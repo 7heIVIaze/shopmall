@@ -8,7 +8,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    titleTemplate: process.env.npm_package_name + '- 딱맞아쇼핑몰 ',
+    titleTemplate: process.env.npm_package_name + ' - 딱맞아쇼핑몰',
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
@@ -48,25 +48,13 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
-    ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}`, systemvars: true }]
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    proxyHeaders: false,
-    withCredentials: true,
   },
-
-  // proxy: {
-  //   "/api/": {
-  //       "target": "http://192.168.0.6:8080",
-  //       "secure": false,
-  //       "changeOrigin": true
-  //   }
-  // },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -114,14 +102,14 @@ module.exports = {
       resave: false,
       saveUninitialized: false,
       cookie: {
+        secure: false,
         maxAge: 1000 * 60 * 60
-      }
+      },
+      key:'connect.sid'
     }),
 
     // Will register file from project api directory to handle /api/* requires
     { path: '/api', handler: '~/api/index.js' },
-
-  ],
-
+  ]
 
 }
