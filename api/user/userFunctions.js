@@ -273,7 +273,7 @@ async function checkQuantity(productCodeList){
 
 // 관리자 계정으로 전환
 userFunctions.changeToAdmin = async function(userIndex, admin, res){
-  let userDoc = await UserModel.findById(userIndex).clone()
+  let userDoc = await UserModel.findById(userIndex)
   if(userDoc.administrator) res.sendStatus(202)
   else{
     if(admin == 'qwer1234!@#$') {

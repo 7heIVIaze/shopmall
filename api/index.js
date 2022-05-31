@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
 
 // passport
 const passport = require('./user/userPassport.js')
-const session = require('cookie-session')
+const session = require('express-session')
 app.use(
   session({
     secret: process.env.SESSION_SECRETKEY,
