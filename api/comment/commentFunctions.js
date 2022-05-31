@@ -1,4 +1,4 @@
-const CommentModel = require('./CommentDB')
+const CommentModel = require('./commentDB')
 const fs = require('fs')
 
 const commentFunctions = {}
