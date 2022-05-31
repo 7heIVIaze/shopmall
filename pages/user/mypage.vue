@@ -179,33 +179,30 @@
         </v-container>
       </v-card>
       <v-fab-transition>
-        <v-list-item>
-              <v-list-item-action>
-                <v-dialog v-model="chgAdminDialog" persistent max-width="600px">
-                  <template v-slot:activator="{ on }">
-                    <v-btn icon v-on="on"><v-icon>mdi-shield-account</v-icon></v-btn>
-                  </template>
-                  <v-container>
-                    <v-card>
-                      <v-card-title><span class="headline">관리자 권한</span></v-card-title>
-                      <v-card-text>
-                        <v-row>
-                          <v-col>
-                            <v-text-field v-model="AdminNumberInput" label="관리자 인증 번호" outlined></v-text-field>
-                          </v-col>
-                        </v-row>
-                      </v-card-text>
-                      <v-card-actions>
-                        <div class="flex-grow-1"></div>
-                        <v-btn color="blue darken-1" text @click="chgAdminDialogClose">취소</v-btn>
-                        <v-btn color="blue darken-1" text @click="changeToAdmin(AdminNumberInput)">변경</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-container>
-                </v-dialog>
-              </v-list-item-action>
-            </v-list-item>
-            <v-divider />
+          <v-fab-transition-action>
+            <v-dialog v-model="chgAdminDialog" persistent max-width="600px">
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on"><v-icon>mdi-shield-account</v-icon></v-btn>
+              </template>
+              <v-container>
+                <v-card>
+                  <v-card-title><span class="headline">관리자 권한</span></v-card-title>
+                  <v-card-text>
+                    <v-row>
+                      <v-col>
+                        <v-text-field v-model="AdminNumberInput" label="관리자 인증 번호" outlined></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                  <v-card-actions>
+                    <div class="flex-grow-1"></div>
+                    <v-btn color="blue darken-1" text @click="chgAdminDialogClose">취소</v-btn>
+                    <v-btn color="blue darken-1" text @click="changeToAdmin(AdminNumberInput)">변경</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-container>
+            </v-dialog>
+          </v-fab-transition-action>
       </v-fab-transition>
     </v-flex>
   </v-layout>
