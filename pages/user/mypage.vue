@@ -50,7 +50,7 @@
                       <v-card-text>
                         <v-row>
                           <v-col>
-                            <v-text-field v-model="userPwdInput" label="변경할 비밀번호" outlined></v-text-field>
+                            <v-text-field v-model="userPwdInput" type="password" label="변경할 비밀번호" outlined></v-text-field>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -190,7 +190,7 @@
                   <v-card-text>
                     <v-row>
                       <v-col>
-                        <v-text-field v-model="AdminNumberInput" label="관리자 인증 번호" outlined></v-text-field>
+                        <v-text-field v-model="AdminNumberInput" type="password" label="관리자 인증 번호" outlined></v-text-field>
                       </v-col>
                     </v-row>
                   </v-card-text>
