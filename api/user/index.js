@@ -147,29 +147,8 @@ router.post('/allbuy', (req, res, next) => {
 // 관리자 계정으로 전환
 router.put('/change-admin', (req, res, next) => {
   const userIndex = req.user._id
-  const admin = prompt("관리자 번호를 입력하시오", "")
-
-  userFunctions.changeToAdmin(userIndex, admin, res)
+  const { AdminNumberInput } = req.body
+  userFunctions.changeToAdmin(userIndex, AdminNumberInput, res)
 })
-
-// module.exports = {
-//   isOwner: function (req, res) {
-//     console.log(req.user)
-//     if(req.user == true) {
-//       return true
-//     }
-//     else {
-//       return false
-//     }
-//   },
-//   statusUI: function (req, res) {
-//     var authStatusUI = '/login'
-//     if(this.isOwner(req, res)) {
-//       console.log(req.session.id)
-//       authStatusUI = `${req.session.id} | /login`
-//     }
-//     return authStatusUI
-//   }
-// }
 
 module.exports = router

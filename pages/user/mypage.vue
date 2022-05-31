@@ -50,7 +50,7 @@
                       <v-card-text>
                         <v-row>
                           <v-col>
-                            <v-text-field v-model="userPwdInput" type="password" label="변경할 비밀번호" outlined></v-text-field>
+                            <v-text-field v-model="userPwdInput" label="변경할 비밀번호" outlined></v-text-field>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -182,7 +182,7 @@
           <v-fab-transition-action>
             <v-dialog v-model="chgAdminDialog" persistent max-width="600px">
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on"><v-icon>mdi-shield-account</v-icon></v-btn>
+                <v-btn bottom right fab fixed icon v-on="on"><v-icon>mdi-shield-account</v-icon></v-btn>
               </template>
               <v-container>
                 <v-card>
@@ -375,15 +375,11 @@ export default {
     },
 
     async changeToAdmin(AdminNumberInput){
-      console.log(process.env.ADMIN_NUM)
-      if (AdminNumberInput === 'admin1234!@#$') {
-        let { status } = await this.$axios.put('/api/user/change-admin')
-        if(status === 200) {
-          this.chgAdminDialog = false
-          alert('관리자 계정으로 전환되었습니다')
-          window.location.reload(true)
-        }
-        else { alert('이미 관리자 계정입니다') }
+      let { status } = await this.$axios.put('/api/user/change-admin', {AdminNumberInput: AdminNumberInput})
+      if(status === 200) {
+        this.chgAdminDialog = false
+        alert('관리자 계정으로 전환되었습니다')
+        window.location.reload(true)
       }
       else {
         alert('잘못된 인증 번호입니다.')

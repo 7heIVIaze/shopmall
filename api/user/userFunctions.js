@@ -276,7 +276,7 @@ userFunctions.changeToAdmin = async function(userIndex, admin, res){
   let userDoc = await UserModel.findById(userIndex)
   if(userDoc.administrator) res.sendStatus(202)
   else{
-    if(admin == 'qwer1234!@#$') {
+    if(admin === process.env.ADMIN_NUM) {
       userDoc.administrator = true
       userDoc.save(function(err){ if(err) console.log('changeToAdmin funtion userDoc save error') })
       res.sendStatus(200)
