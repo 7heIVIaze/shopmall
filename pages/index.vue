@@ -87,22 +87,22 @@ export default {
     currentPage: 1,
     mains: [
       {
-        profileUrl: require('../../static/storeImages/differ.jpg'),
+        profileUrl: require('../static/storeImages/differ.jpg'),
         profileTitle: 'Different',
         profileText: 'People have different body sizes.'
       },
       {
-        profileUrl: require('../../static/storeImages/size.jpg'),
+        profileUrl: require('../static/storeImages/size.jpg'),
         profileTitle: 'Cloth Size',
         profileText: 'But clothes are usually sold in standard sizes.'
       },
       {
-        profileUrl: require('../../static/storeImages/measure.png'),
+        profileUrl: require('../static/storeImages/measure.png'),
         profileTitle: 'Sizing',
         profileText: 'We make pants according to different body sizes for each customer.'
       },
       {
-        profileUrl: require('../../static/storeImages/mending.jpg'),
+        profileUrl: require('../static/storeImages/mending.jpg'),
         profileTitle: 'Making',
         profileText: 'Our products are made by craftsmen according to the customer\'s size.'
       }
