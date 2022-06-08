@@ -56,6 +56,7 @@ app.use(cookieParser())
 app.use('/user', require('./user/index.js'))
 app.use('/product', require('./product/index.js'))
 app.use('/comment', require('./comment/index.js'))
+app.use('/upload', require('./upload/upload_router'))
 
 module.exports = {
   path: '/api',

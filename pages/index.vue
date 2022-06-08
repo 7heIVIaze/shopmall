@@ -33,7 +33,23 @@
           <v-pagination v-if="cards && cards.length !== 0" v-model="currentPage" :length="totalPage"></v-pagination>
         </v-row>
       </v-flex>
-      
+
+      <v-divider />
+      <v-divider />
+
+      <v-flex>
+        <div style="text-align: center; padding: 10px"><h1>sizing & self - produced</h1></div>
+        <v-row>
+          <v-col v-for="main in mains" :key="main.id" cols="3">
+            <v-card hover :activator="{ on }">
+              <v-img :src="main.profileUrl" class="white--text" height="200px" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"></v-img>
+              <v-card-title class="fill-height align-end"><span class="headling">{{ main.profileTitle }}</span></v-card-title>
+              <v-card-text><span><i>{{ main.profileText }}</i></span></v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-flex>
+
     </v-flex>
   </v-layout>
 </template>
@@ -69,6 +85,28 @@ export default {
 
   data: () => ({
     currentPage: 1,
+    mains: [
+      {
+        profileUrl: require('../../static/storeImages/differ.jpg'),
+        profileTitle: 'Different',
+        profileText: 'People have different body sizes.'
+      },
+      {
+        profileUrl: require('../../static/storeImages/size.jpg'),
+        profileTitle: 'Cloth Size',
+        profileText: 'But clothes are usually sold in standard sizes.'
+      },
+      {
+        profileUrl: require('../../static/storeImages/measure.png'),
+        profileTitle: 'Sizing',
+        profileText: 'We make pants according to different body sizes for each customer.'
+      },
+      {
+        profileUrl: require('../../static/storeImages/mending.jpg'),
+        profileTitle: 'Making',
+        profileText: 'Our products are made by craftsmen according to the customer\'s size.'
+      }
+    ],
   }),
 
   computed: {
