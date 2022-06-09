@@ -7,6 +7,7 @@ const CommentSchema = new mongoose.Schema({
   commentUserId: { type: String, required: true, default: '' },
   commentDate: { type: String, required: true, default: '' },
   commentContent: { type: String, required: true, default: '' },
+  commentRating: { type: Number, required: true, default: 0},
 })
 
 

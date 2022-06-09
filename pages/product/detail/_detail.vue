@@ -49,6 +49,9 @@
             <v-card v-if="isLogin">
               <v-container>
                 <span><v-text-field v-model="commentStr" label="상품의견" prepend-icon="mdi-comment" append-outer-icon="mdi-send" @click:append-outer="commentSubmit" clearable></v-text-field></span>
+                <span>
+                  <b-form-rating v-model="rating"></b-form-rating>
+                </span>
               </v-container>
             </v-card>
           </v-col>
@@ -112,6 +115,7 @@ export default {
     waistsize: '',
     leglength: '',
     commentStr: '',
+    rating: 0,
   }),
 
   methods: {
@@ -174,10 +178,11 @@ export default {
     async commentSubmit(){
       let commentStrTrimmed = this.commentStr.trim()
       if(!commentStrTrimmed || commentStrTrimmed.length === 0) alert('상품의견을 적어주세요')
+      else if(!this.rating) alert('별점 리뷰를 체크해주세요')
       else{
         let date = new Date()
         let commentDate = await this.dateWithTime(date)
-        let { status } = await this.$axios.post('/api/comment/add', { productCode: this.productDetail.productCode, commentDate: commentDate, commentStr: this.commentStr })
+        let { status } = await this.$axios.post('/api/comment/add', { productCode: this.productDetail.productCode, commentDate: commentDate, commentStr: this.commentStr,  commentRating: this.rating })
         if(status === 200) window.location.reload(true)
         else alert('상품의견 등록 실패')
       }

@@ -4,13 +4,14 @@ const fs = require('fs')
 const commentFunctions = {}
 
 // 해당 상품의 상품의견 등록
-commentFunctions.addComment = async function(productCode, userAvatar, userId, commentDate, commentStr, res){
+commentFunctions.addComment = async function(productCode, userAvatar, userId, commentDate, commentStr, commentRating, res){
   let comment = new CommentModel({
     commentProductCode: productCode,
     commentAvatar: userAvatar,
     commentUserId: userId,
     commentDate: commentDate,
-    commentContent: commentStr
+    commentContent: commentStr,
+    commentRating: commentRating
   })
 
   await comment.save(function(err) {
