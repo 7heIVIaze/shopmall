@@ -6,11 +6,7 @@ const multerS3 = require('multer-s3')
 require('dotenv').config()
 
 const bucket = process.env.S3_BUCKET_NAME
-let params = { 
-  Bucket: bucket,
-  Delimiter: '/',
-  Prefix: 'userImages/' 
-}
+
 AWS.config.update({
   apiVersion: '2006-03-01',
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -25,6 +21,23 @@ productFunctions.addProduct = async function(productImgs, productTitle, productD
   productPrice += ''; productQuantity += '';
   let numProductQuantity = productQuantity.replace(/[^\d]+/g, '')
   let numProductPrice = productPrice.replace(/[^\d]+/g, '')
+  if(!productImgs) {
+    let nameArray =[];
+    let params = { 
+      Bucket: bucket,
+      Delimiter: '/',
+      Prefix: `productImages/${productCode}/`
+    }
+    s3.listObjects(params, function (err, data) {
+    if(err)throw err;
+    for(let i=0; i<data.CommonPrefixes.length; i++){
+      console.log(data.CommonPrefixes[i].Prefix);
+      nameArray.push(`'${data.CommonPrefixes[i].Prefix.replace(/productImages/g,'').replace(/\//g,'')}'`)
+    }
+    console.log(nameArray)
+  });
+    productImgs = nameArray[0]
+  }
   let product = new ProductModel({
     productImgs: productImgs,  // ['A180_1569848638936.jpeg', 'A180_1569848638940.jpeg', 'A180_1569848638941.jpeg']
     productTitle: productTitle,
