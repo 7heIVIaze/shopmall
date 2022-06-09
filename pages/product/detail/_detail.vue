@@ -66,7 +66,7 @@
                   <v-list-item :key="'A' + index">
                     <v-list-item-avatar><v-img :src="commentItem.commentAvatar"></v-img></v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-subtitle>{{ commentItem.commentUserId }} <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ commentItem.commentUserId }} <span style="float;">{{ commentItem.commentRating }}</span> <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
