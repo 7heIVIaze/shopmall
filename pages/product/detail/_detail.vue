@@ -48,12 +48,9 @@
           <v-col>
             <v-card v-if="isLogin">
               <v-container>
-                <v-row>
-                <span><v-text-field v-model="commentStr" label="상품의견" prepend-icon="mdi-comment" append-outer-icon="mdi-send" @click:append-outer="commentSubmit" clearable></v-text-field></span>
-                </v-row>
-                <v-row>
-                  <span><b-form-rating v-model="rating"></b-form-rating></span>
-                </v-row>
+                <span><v-text-field v-model="commentStr" label="상품의견" prepend-icon="mdi-comment" clearable></v-text-field></span>
+                <span><b-form-rating v-model="rating"></b-form-rating></span>
+                <span><v-btn @click:append-outer="commentSubmit"><v-icon>mdi-send</v-icon></v-btn></span>
               </v-container>
             </v-card>
           </v-col>
