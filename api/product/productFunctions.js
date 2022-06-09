@@ -1,7 +1,9 @@
 const ProductModel = require('./productDB')
 const fs = require('fs')
 const UserModel = require('../user/userDB')
+require('dotenv').config()
 
+const bucket = process.env.S3_BUCKET_NAME
 const productFunctions = {}
 
 // 상품 추가
@@ -63,15 +65,20 @@ productFunctions.paginateProduct = async function(req, res){
 
 // 썸네일 dataURI string 생성
 async function thumbnailDataURI_generator(productCode){
-  let dirPath = 'uploads/productImages/' + productCode
+  // let dirPath = `uploads/productImages/` + productCode
+  // let dataURIarray = []
+  // if(fs.existsSync(dirPath)){
+  //   let fileNames = fs.readdirSync(dirPath)  // fileNames[0] = A190_1570518944531.jpeg
+  //   let mimetypeStr = fileNames[0].split('.').pop()
+  //   let base64Data = fs.readFileSync(`${dirPath}/${fileNames[0]}`, 'base64')
+  //   let dataURI = `data:image/${mimetypeStr};base64,${base64Data}`
+  //   dataURIarray.push(dataURI)
+  // }
   let dataURIarray = []
-  if(fs.existsSync(dirPath)){
-    let fileNames = fs.readdirSync(dirPath)  // fileNames[0] = A190_1570518944531.jpeg
-    let mimetypeStr = fileNames[0].split('.').pop()
-    let base64Data = fs.readFileSync(`${dirPath}/${fileNames[0]}`, 'base64')
-    let dataURI = `data:image/${mimetypeStr};base64,${base64Data}`
-    dataURIarray.push(dataURI)
-  }
+  let productDoc = await ProductModel.findOne({productCode: productCode}).select('productImgs').catch(e => console.log('detailProduct product findOne error'))
+  console.log(productDoc.productImgs)
+  dataURI = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/productImages/${productCode}/${productDoc.productImgs}`
+  dataURIarray.push(dataURI)
   return dataURIarray // 썸네일 이미지로 쓸 이미지 dataURI 1개만 들어있는 배열(길이 1)
 }
 
@@ -139,20 +146,6 @@ productFunctions.detailProduct = async function(productCode, res, userIndex){
   }
 }
 
-// 유저 프로필 이미지 DataURI 생성
-async function getUserAvatarDataURI(userAvatarImgName){
-  userAvatarImgName += ''
-  let imgNameWithoutExt = userAvatarImgName.substring(0, userAvatarImgName.lastIndexOf('.'))
-
-  let dirPath = 'uploads/userImages/' + imgNameWithoutExt
-  let mimetypeStr = userAvatarImgName.substring(userAvatarImgName.lastIndexOf('.'),)
-  if(fs.existsSync(dirPath)){  // 파일이나 폴더가 존재하는지 파악
-    let base64Data = fs.readFileSync(`${dirPath}/${userAvatarImgName}`, 'base64')     //파일 자체를 base64로 읽어들인다.
-    let userAvatarDataURI = `data:image/${mimetypeStr};base64,${base64Data}`
-    return userAvatarDataURI
-  }
-}
-
 // 세션 유저가 구매한 상품들의 정보 응답
 productFunctions.purchaseProductInfo = async function(userIndex, res){
   let userDoc = await UserModel.findById(userIndex).catch(e=> console.log('purchaseProductInfo function error'))
@@ -181,16 +174,21 @@ async function findAllProduct_DB(){
 
 // dataURI 배열 생성
 async function dataURI_generator(productCode){
-  let dirPath = 'uploads/productImages/' + productCode
+  // let dirPath = `uploads/productImages/` + productCode
+  // let dataURIarray = []
+  // if(fs.existsSync(dirPath)){
+  //   fs.readdirSync(dirPath).forEach(function(fileName, index){
+  //     let mimetypeStr = fileName.split('.').pop()
+  //     let base64Data = fs.readFileSync(`${dirPath}/${fileName}`, 'base64')
+  //     let dataURI = `data:image/${mimetypeStr};base64,${base64Data}`
+  //     dataURIarray.push(dataURI)
+  //   })
+  // }
   let dataURIarray = []
-  if(fs.existsSync(dirPath)){
-    fs.readdirSync(dirPath).forEach(function(fileName, index){
-      let mimetypeStr = fileName.split('.').pop()
-      let base64Data = fs.readFileSync(`${dirPath}/${fileName}`, 'base64')
-      let dataURI = `data:image/${mimetypeStr};base64,${base64Data}`
-      dataURIarray.push(dataURI)
-    })
-  }
+  let productDoc = await ProductModel.findOne({productCode: productCode}).select('productImgs').catch(e => console.log('detailProduct product findOne error'))
+  console.log(productDoc.productImgs)
+  dataURI = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/productImages/${productCode}/${productDoc.productImgs}`
+  dataURIarray.push(dataURI)
   return dataURIarray
 }
 

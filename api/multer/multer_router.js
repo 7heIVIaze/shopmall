@@ -5,10 +5,11 @@ const fs = require('fs')
 const AWS = require('aws-sdk')
 const multerS3 = require('multer-s3')
 const router = require('express').Router()
+require('dotenv').config()
 
 AWS.config.update({
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: process.env.S3_REGION,
+    creden: process.env.S3_SECRET_ACCESS_KEY,
     region: process.env.S3_REGION,
 })
 
@@ -36,16 +37,6 @@ const useruploads = multer({
         },
     }),
     limits: { fileSize: 5 * 1024 * 1024 },
-})
-
-// 상품 이미지가 저장된 url
-router.post('/', productuploads.single('img'), (req, res) => {
-    res.json({ url: req.file.location })
-})
-
-// 유저 이미지가 저장된 url
-router.post('/', useruploads.single('img'), (req, res) => {
-    res.json({ url: req.file.location })
 })
 
 module.exports = router

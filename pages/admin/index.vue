@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import AWS from 'aws-sdk'
 export default {
   middleware: 'pageGuard',
 

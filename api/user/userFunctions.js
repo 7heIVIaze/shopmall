@@ -1,7 +1,10 @@
 const UserModel = require('./userDB')
 const fs = require('fs')
+const AWS = require('aws-sdk')
 const ProductModel = require('../product/productDB')
+require('dotenv').config
 
+const bucket = process.env.S3_BUCKET_NAME
 const userFunctions = {}
 
 // 유저 아이디 이미 존재하는지 체크(중복체크)
@@ -46,18 +49,44 @@ userFunctions.addUser_DB = async function(userId, userPwd, res){
   }
 }
 
+// aws 존재 여부 확인
+let params = { 
+  Bucket: bucket,
+  Delimiter: '/',
+  Prefix: 'userImages/' 
+}
+const s3 = new AWS.S3()
+
+
 // 유저 프로필 이미지 DataURI 생성
 userFunctions.getUserAvatarDataURI = async function(userAvatarImgName){
   userAvatarImgName += ''
   let imgNameWithoutExt = userAvatarImgName.substring(0, userAvatarImgName.lastIndexOf('.'))
 
-  let dirPath = 'uploads/userImages/' + imgNameWithoutExt
-  let mimetypeStr = userAvatarImgName.substring(userAvatarImgName.lastIndexOf('.'),)
+  // let dirPath = `uploadsuserImages/` + imgNameWithoutExt
+  let nameArray =[];
+  
+  s3.listObjects(params, function (err, data) {
+    if(err)throw err;
+  
+    for(let i=0; i<data.CommonPrefixes.length; i++){
+      console.log(data.CommonPrefixes[i].Prefix);
+      nameArray.push(`'${data.CommonPrefixes[i].Prefix.replace(/userImages/g,'').replace(/\//g,'')}'`)
+    }
+    console.log(nameArray)
+    
+  });
+  // let mimetypeStr = userAvatarImgName.substring(userAvatarImgName.lastIndexOf('.'),)
   let userAvatarDataURI = ''
-  if(fs.existsSync(dirPath)){  // 파일이나 폴더가 존재하는지 파악
-    let base64Data = fs.readFileSync(`${dirPath}/${userAvatarImgName}`, 'base64');    //파일 자체를 base64로 읽어들인다.
-    userAvatarDataURI = `data:image/${mimetypeStr};base64,${base64Data}`
+  for(let name of nameArray) {
+  if(name == imgNameWithoutExt){  // 파일이나 폴더가 존재하는지 파악
+      // let base64Data = fs.readFileSync(`${dirPath}/${userAvatarImgName}`, 'base64');    //파일 자체를 base64로 읽어들인다.
+      // userAvatarDataURI = `data:image/${mimetypeStr};base64,${base64Data}`
+      userAvatarDataURI = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/userImages/${imgNameWithoutExt}/${userAvatarImgName}`
+      return userAvatarDataURI
+    }
   }
+  userAvatarDataURI = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/userImages/default/default`
   return userAvatarDataURI
 }
 
@@ -143,7 +172,7 @@ userFunctions.addUserAddress = async function(userIndex, userZonecode, userRoadA
 
 // 유저 회원탈퇴
 userFunctions.deleteAccount = async function(userIndex, userAvatarimgNameWithoutExt, req, res){
-  let dirPath = 'uploads/userImages/' + userAvatarimgNameWithoutExt
+  let dirPath = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/userImages/` + userAvatarimgNameWithoutExt
   await UserModel.deleteOne({ _id: userIndex }, function(err){
     if(err) console.log('deleteAccount function error')
     else{
