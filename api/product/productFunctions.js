@@ -1,6 +1,8 @@
 const ProductModel = require('./productDB')
 const fs = require('fs')
 const UserModel = require('../user/userDB')
+const AWS = require('aws-sdk')
+const multerS3 = require('multer-s3')
 require('dotenv').config()
 
 const bucket = process.env.S3_BUCKET_NAME

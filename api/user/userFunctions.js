@@ -1,6 +1,7 @@
 const UserModel = require('./userDB')
 const fs = require('fs')
 const AWS = require('aws-sdk')
+const multerS3 = require('multer-s3')
 const ProductModel = require('../product/productDB')
 require('dotenv').config
 
