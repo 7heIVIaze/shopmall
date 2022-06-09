@@ -5,6 +5,13 @@ const ProductModel = require('../product/productDB')
 require('dotenv').config
 
 const bucket = process.env.S3_BUCKET_NAME
+// aws 존재 여부 확인
+let params = { 
+  Bucket: bucket,
+  Delimiter: '/',
+  Prefix: 'userImages/' 
+}
+const s3 = new AWS.S3()
 const userFunctions = {}
 
 // 유저 아이디 이미 존재하는지 체크(중복체크)
@@ -49,13 +56,7 @@ userFunctions.addUser_DB = async function(userId, userPwd, res){
   }
 }
 
-// aws 존재 여부 확인
-let params = { 
-  Bucket: bucket,
-  Delimiter: '/',
-  Prefix: 'userImages/' 
-}
-const s3 = new AWS.S3()
+
 
 
 // 유저 프로필 이미지 DataURI 생성
@@ -78,15 +79,15 @@ userFunctions.getUserAvatarDataURI = async function(userAvatarImgName){
   });
   // let mimetypeStr = userAvatarImgName.substring(userAvatarImgName.lastIndexOf('.'),)
   let userAvatarDataURI = ''
+  // if(fs.existsSync(dirPath)){  // 파일이나 폴더가 존재하는지 파악
+  //   let base64Data = fs.readFileSync(`${dirPath}/${userAvatarImgName}`, 'base64');    //파일 자체를 base64로 읽어들인다.
+  //   userAvatarDataURI = `data:image/${mimetypeStr};base64,${base64Data}`
+  // }
   for(let name of nameArray) {
-  if(name == imgNameWithoutExt){  // 파일이나 폴더가 존재하는지 파악
-      // let base64Data = fs.readFileSync(`${dirPath}/${userAvatarImgName}`, 'base64');    //파일 자체를 base64로 읽어들인다.
-      // userAvatarDataURI = `data:image/${mimetypeStr};base64,${base64Data}`
+    if(name == imgNameWithoutExt){ 
       userAvatarDataURI = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/userImages/${imgNameWithoutExt}/${userAvatarImgName}`
-      return userAvatarDataURI
     }
   }
-  userAvatarDataURI = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/userImages/default/default`
   return userAvatarDataURI
 }
 
@@ -172,18 +173,35 @@ userFunctions.addUserAddress = async function(userIndex, userZonecode, userRoadA
 
 // 유저 회원탈퇴
 userFunctions.deleteAccount = async function(userIndex, userAvatarimgNameWithoutExt, req, res){
-  let dirPath = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/userImages/` + userAvatarimgNameWithoutExt
+  //let dirPath = `uploads/userImages/` + userAvatarimgNameWithoutExt
+  let user = await ProductModel.findOne({_id: userIndex}).select('userAvatar').catch(e => console.log('deleteAccount user findOne error'))
   await UserModel.deleteOne({ _id: userIndex }, function(err){
     if(err) console.log('deleteAccount function error')
     else{
       if(userAvatarimgNameWithoutExt === 'default') { req.logout(); res.sendStatus(200); }
       else{
-        if(fs.existsSync(dirPath)){
-          fs.readdirSync(dirPath).forEach(function(fileName, index){
-            fs.unlinkSync(`${dirPath}/${fileName}`)
-          })
-          fs.rmdirSync(dirPath)
-        }
+        // if(fs.existsSync(dirPath)){
+        //   fs.readdirSync(dirPath).forEach(function(fileName, index){
+        //     fs.unlinkSync(`${dirPath}/${fileName}`)
+        //   })
+        //   fs.rmdirSync(dirPath)
+        // }
+        s3.deleteObject({
+          Bucket: bucket, // 사용자 버켓 이름
+          Key: `userImages/${userAvatarimgNameWithoutExt}/${user.userAvatar}` // 버켓 내 경로
+        }, (err, data) => {
+          if (err) { throw err; }
+          console.log('s3 deleteObject ', data)
+        })
+        // 이미지 파일 제거
+        s3.deleteObject({
+          Bucket: bucket, // 사용자 버켓 이름
+          Key: `userImages/${userAvatarimgNameWithoutExt}` // 버켓 내 경로
+        }, (err, data) => {
+          if (err) { throw err; }
+          console.log('s3 deleteObject ', data)
+        })
+        // 폴더 제거
         req.logout()
         res.sendStatus(200)
       }

@@ -13,17 +13,15 @@ AWS.config.update({
 const s3 = new AWS.S3()
 
 // 상품 이미지 저장
-const productUpload = multer({
-  storage: multerS3({
-      s3: s3,
-      bucket: process.env.S3_BUCKET_NAME,
-      key: (req, file, cb) => {
-        let productAddForm = JSON.parse(req.body.productAddForm)
-        let productCode = productAddForm.productCode
-        let ext = file.mimetype.split('/')[1]
-        cb(null, `productImages/${productCode}/${productCode}_${Date.now()}.${ext}`)
-      },
-  })
+const storage = multerS3({
+  s3: s3,
+  bucket: process.env.S3_BUCKET_NAME,
+  key: (req, file, cb) => {
+    let productAddForm = JSON.parse(req.body.productAddForm)
+    let productCode = productAddForm.productCode
+    let ext = file.mimetype.split('/')[1]
+    cb(null, `productImages/${productCode}/${productCode}_${Date.now()}.${ext}`)
+  },
 })
 
 // const storage = multer.diskStorage({
@@ -44,6 +42,6 @@ const productUpload = multer({
 //   }
 // })
 
-// const productUpload = multer({ storage: storage })
+const productUpload = multer({ storage: storage })
 
 module.exports = productUpload

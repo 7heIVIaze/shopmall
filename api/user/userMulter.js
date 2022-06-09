@@ -19,11 +19,9 @@ const storage = multerS3({
   key: (req, file, cb) => {
     let userId = req.body.userId
     let ext = file.mimetype.split('/')[1]
-    cb(null, `userImages/${userId}.${ext}`)
+    cb(null, `userImages/${userId}/${userId}.${ext}`)
   },
 })
-
-const userUpload = multer({ storage: storage })
 
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -46,9 +44,7 @@ const userUpload = multer({ storage: storage })
 //   }
 // })
 
-// const userUpload = multer({ storage: storage })
+const userUpload = multer({ storage: storage })
 
-//https://kimdave20.s3.ap-northeast-2.amazonaws.com/productImages/2/2_1654087706493.gif
-//https://kimdave.s3.ap-northeast-2.amazonaws.com/productImages/2/2_1654087706493.gif
 
 module.exports = userUpload

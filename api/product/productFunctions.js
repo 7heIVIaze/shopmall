@@ -4,6 +4,12 @@ const UserModel = require('../user/userDB')
 require('dotenv').config()
 
 const bucket = process.env.S3_BUCKET_NAME
+let params = { 
+  Bucket: bucket,
+  Delimiter: '/',
+  Prefix: 'userImages/' 
+}
+const s3 = new AWS.S3()
 const productFunctions = {}
 
 // 상품 추가
@@ -31,19 +37,37 @@ productFunctions.addProduct = async function(productImgs, productTitle, productD
 
 // 상품 삭제
 productFunctions.deleteProduct = async function(productCode, res){
-  let dirPath = 'uploads/productImages/' + productCode
+  let product = await ProductModel.findOne({productCode: productCode}).select('productImgs').catch(e => console.log('deleteProduct product findOne error'))
+  // let dirPath = 'uploads/productImages/' + productCode
   await ProductModel.deleteOne({productCode: productCode}, function(err){
     if(err) console.log('deleteProduct function error')
     else{
-      if(fs.existsSync(dirPath)){
-        fs.readdirSync(dirPath).forEach(function(fileName, index){
-          fs.unlinkSync(`${dirPath}/${fileName}`)
-        })
-        fs.rmdirSync(dirPath)
-      }
+      // if(fs.existsSync(dirPath)){
+      //   fs.readdirSync(dirPath).forEach(function(fileName, index){
+      //     fs.unlinkSync(`${dirPath}/${fileName}`)
+      //   })
+      //   fs.rmdirSync(dirPath)
+      // }
+      s3.deleteObject({
+        Bucket: bucket, // 사용자 버켓 이름
+        Key: `productImages/${productCode}/${product.productImgs}` // 버켓 내 경로
+      }, (err, data) => {
+        if (err) { throw err; }
+        console.log('s3 deleteObject ', data)
+      })
+      // 파일 삭제
+      s3.deleteObject({
+        Bucket: bucket, // 사용자 버켓 이름
+        Key: `productImages/${productCode}` // 버켓 내 경로
+      }, (err, data) => {
+        if (err) { throw err; }
+        console.log('s3 deleteObject ', data)
+      })
+      // 폴더 삭제
       res.sendStatus(200)
     }
   })
+  
 }
 
 // 페이지 나누기
