@@ -48,15 +48,8 @@
           <v-col>
             <v-card v-if="isLogin">
               <v-container>
-                <span><v-text-field v-model="commentStr" label="상품의견" prepend-icon="mdi-comment" append-outer-icon="mdi-send" @click:append-outer="commentSubmit" clearable></v-text-field></span>
-                <span>
-                  <b-form-rating v-model="rating"></b-form-rating>
-                </span>
+                <span><v-text-field v-model="commentStr" label="상품의견" prepend-icon="mdi-comment" append-outer-icon="mdi-send" @click:append-outer="commentSubmit" clearable> <span style="vertical-align: left;"><b-form-rating v-model="rating"></b-form-rating></span></v-text-field></span>
               </v-container>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row>
           <v-col>
             <v-card class="mx-auto" v-if="productComment && productComment.length !== 0">
               <v-list three-line>
