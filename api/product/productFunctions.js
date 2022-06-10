@@ -187,21 +187,24 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
         console.log('user find function start')
         users.forEach(function(element) {
           console.log(element.userId)
-          let userBuyHistory = element.userBuyHistory
-          if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
-          else {
-            for(let i of userBuyHistory) {
-              let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode')
-              found.productImgs = await thumbnailDataURI_generator(found.productCode)
-              found.productCode = i  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
-              purchasedHistoryProducts.push(element.userId)
-              purchasedHistoryProducts.push(found)
-            }
-            res.status(200).send(purchasedHistoryProducts)
-          }
+          usersDoc.push(element.userId)
         })
-      } 
+      }
     })
+    for(let i of usersDoc) {
+      let userBuyHistory = i.userBuyHistory
+      if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
+      else {
+        for(let j of userBuyHistory) {
+          let found = await ProductModel.findOne({productCode: j.substring(0, j.indexOf('_'))}).select('productImgs productTitle productCode')
+          found.productImgs = await thumbnailDataURI_generator(found.productCode)
+          found.productCode = j  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
+          purchasedHistoryProducts.push(i)
+          purchasedHistoryProducts.push(found)
+        }
+        res.status(200).send(purchasedHistoryProducts)
+      }
+    }
   }
   else {
     let userBuyHistory = userDoc.userBuyHistory
