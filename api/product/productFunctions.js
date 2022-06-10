@@ -208,7 +208,7 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
           purchasedHistoryUsers.push(i.userId)
           purchasedHistoryProducts.push(found)
         }
-        res.status(200).send({
+        res.status(200).json({
           purchasedHistoryUsers: purchasedHistoryUsers,
           purchasedHistoryProducts: purchasedHistoryProducts,
         })
