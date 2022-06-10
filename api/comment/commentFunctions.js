@@ -38,12 +38,16 @@ commentFunctions.addComment = async function(productCode, userAvatar, userId, co
 
 // 해당 상품의 상품의견 리스트
 commentFunctions.getComment = async function(productCode, res){
+  let sum = 0
   await CommentModel.find({commentProductCode: productCode}, async function(err, docs){
     if(err) console.log('getComment function error')
     else if(!docs) res.send(null)
     else{
-      for(let i of docs) i.commentAvatar = await getUserAvatarDataURI(i.commentAvatar)
-      res.send(docs)
+      for(let i of docs) {
+         i.commentAvatar = await getUserAvatarDataURI(i.commentAvatar)
+         sum += 1
+      }
+      res.json({docs: docs, sum: sum})
     }
   })
 }
