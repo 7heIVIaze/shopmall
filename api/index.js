@@ -56,7 +56,6 @@ app.use(cookieParser())
 app.use('/user', require('./user/index.js'))
 app.use('/product', require('./product/index.js'))
 app.use('/comment', require('./comment/index.js'))
-app.use('/multer', require('./multer/multer_router'))
 
 module.exports = {
   path: '/api',
