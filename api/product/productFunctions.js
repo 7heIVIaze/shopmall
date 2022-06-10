@@ -196,7 +196,7 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
       let userBuyHistory = i.userBuyHistory
       console.log(i.userId)
       console.log(userBuyHistory)
-      if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
+      if(!userBuyHistory || userBuyHistory.length === 0) continue
       else {
         for(let j of userBuyHistory) {
           console.log('for loop')
