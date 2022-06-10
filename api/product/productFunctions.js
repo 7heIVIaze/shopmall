@@ -204,7 +204,7 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
           let found = await ProductModel.findOne({productCode: j.substring(0, j.indexOf('_'))}).select('productImgs productTitle productCode')
           found.productImgs = await thumbnailDataURI_generator(found.productCode)
           found.productCode = j  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
-          purchasedHistoryProducts.push(i)
+          purchasedHistoryProducts.push(i.userId)
           purchasedHistoryProducts.push(found)
         }
         res.status(200).send(purchasedHistoryProducts)
