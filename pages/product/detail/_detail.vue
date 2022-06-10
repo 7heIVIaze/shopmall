@@ -24,8 +24,8 @@
                               half-increments
                               readonly
                               size="10"
-                              value="{{ productDetail.productRating }}"
-                            >{{ productDetail.productRating }}</v-rating></pre></div>
+                              value=productDetail.productRating
+                            ></v-rating>{{ productDetail.productRating }}</pre></div>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
                 </v-card-text>
@@ -82,7 +82,16 @@
                   <v-list-item :key="'A' + index">
                     <v-list-item-avatar><v-img :src="commentItem.commentAvatar"></v-img></v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-subtitle>{{ commentItem.commentUserId }} <span style="float;">{{ commentItem.commentRating }}</span> <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ commentItem.commentUserId }} <span style="float;">><v-rating
+                              color="yellow darken-3"
+                              background-color="grey darken-1"
+                              empty-icon="$ratingFull"
+                              half-increments
+                              readonly
+                              size="10"
+                              value=commentItem.commentRating
+                            ></v-rating>{{ commentItem.commentRating }}</span>
+                            <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
