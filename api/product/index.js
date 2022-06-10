@@ -7,7 +7,9 @@ router.post('/add', productUpload.array('files'), (req, res, next) => {
   let productImgs = []
   for(let i of req.files) {
     console.log(i.location)
-    productImgs.push(i.filename)
+    const spliti = i.location.split('/')
+    const filename = spliti[spliti.length-1] // 파일명
+    productImgs.push(filename)
   }
   let productAddForm = JSON.parse(req.body.productAddForm)
   const { productTitle, productDescription, productPrice, productCode, productQuantity, productHashTag } = productAddForm
