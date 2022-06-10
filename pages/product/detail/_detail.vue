@@ -50,7 +50,7 @@
               <v-container>
                 <span><v-text-field v-model="commentStr" label="상품의견" prepend-icon="mdi-comment" clearable></v-text-field></span>
                 <span><b-form-rating v-model="rating"></b-form-rating></span>
-                <span><v-btn @click:append-outer="commentSubmit"><v-icon>mdi-send</v-icon></v-btn></span>
+                <span><v-btn style="flex:left;" @click:append-outer="commentSubmit"><v-icon>mdi-send</v-icon></v-btn></span>
               </v-container>
             </v-card>
           </v-col>
@@ -114,7 +114,7 @@ export default {
     waistsize: '',
     leglength: '',
     commentStr: '',
-    rating: 0,
+    rating: null,
   }),
 
   methods: {
