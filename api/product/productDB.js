@@ -12,7 +12,7 @@ const ProductSchema = new mongoose.Schema({
   productHeartColor: { type: String, required: true, default: 'white' },
   productCartColor: { type: String, required: true, default: 'white' },
   productCarousel: { type: Boolean, default: false },
-  productRating: { type: Double, required: true, default: 0 }
+  productRating: { type: Number, required: true, default: 0 }
 })
 
 
