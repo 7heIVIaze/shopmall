@@ -67,7 +67,7 @@
                         hover
                         large
                       ></v-rating></span>
-                <span><v-btn style="flex:left;" @click:append-outer="commentSubmit(commentStr, rating)"><v-icon>mdi-send</v-icon></v-btn></span>
+                <span><v-btn style="flex:right;" @click="commentSubmit(commentStr, rating)"><v-icon>mdi-send</v-icon></v-btn></span>
               </v-container>
             </v-card>
           </v-col>

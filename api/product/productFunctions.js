@@ -179,6 +179,7 @@ productFunctions.detailProduct = async function(productCode, res, userIndex){
 productFunctions.purchaseProductInfo = async function(userIndex, res){
   let userDoc = await UserModel.findById(userIndex).catch(e=> console.log('purchaseProductInfo function error'))
   let purchasedHistoryProducts = []
+  let purchasedHistoryUsers = []
   if(userDoc.administrator) {
     let usersDoc = []
     await UserModel.find(function(err, users) {
@@ -204,10 +205,13 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
           let found = await ProductModel.findOne({productCode: j.substring(0, j.indexOf('_'))}).select('productImgs productTitle productCode')
           found.productImgs = await thumbnailDataURI_generator(found.productCode)
           found.productCode = j  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
-          purchasedHistoryProducts.push(i.userId)
+          purchasedHistoryUsers.push(i.userId)
           purchasedHistoryProducts.push(found)
         }
-        res.status(200).send(purchasedHistoryProducts)
+        res.status(200).send({
+          purchasedHistoryUsers: purchasedHistoryUsers,
+          purchasedHistoryProducts: purchasedHistoryProducts,
+        })
       }
     }
   }
