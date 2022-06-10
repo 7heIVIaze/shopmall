@@ -17,7 +17,7 @@
               <v-card>
                 <v-card-title>{{ productDetail.productTitle }}</v-card-title>
                 <v-card-text>
-                  <div><pre><v-rating
+                  <v-row><pre><v-rating
                               color="yellow darken-3"
                               background-color="grey darken-1"
                               empty-icon="$ratingFull"
@@ -25,8 +25,9 @@
                               readonly
                               size="20"
                               :value= "productDetail.productRating"
-                            ></v-rating></pre></div>
-                            <div style="float:flex;">{{ productDetail.productRating }}/5</div>
+                            ></v-rating></pre>
+                            <div>{{ productDetail.productRating }}/5</div>
+                    </v-row>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
                 </v-card-text>
@@ -83,7 +84,8 @@
                   <v-list-item :key="'A' + index">
                     <v-list-item-avatar><v-img :src="commentItem.commentAvatar"></v-img></v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-subtitle>{{ commentItem.commentUserId }} <span style="float;">><v-rating
+                      <v-list-item-subtitle>{{ commentItem.commentUserId }} 
+                      <v-row class="mx-0"><v-rating
                               color="yellow darken-3"
                               background-color="grey darken-1"
                               empty-icon="$ratingFull"
@@ -91,7 +93,9 @@
                               readonly
                               size="10"
                               :value="commentItem.commentRating"
-                            ></v-rating></span><span style="float:flex;">{{ commentItem.commentRating }}/5</span>
+                            ></v-rating>
+                            <div>{{ commentItem.commentRating }}/5</div>
+                      </v-row>
                             <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
