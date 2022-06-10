@@ -25,7 +25,7 @@ export default {
   middleware: 'pageGuard',
 
   async asyncData ({ params, req, $axios }) {
-    let { adminstatus } = await $axios.get('/api/user/session-administrator')
+    let adminstatus = await $axios.get('/api/user/session-administrator')
     let isAdmin = false
     if(adminstatus === 200) isAdmin = true
     let { status, data } = await $axios.get('/api/product/purchase-productinfo')
