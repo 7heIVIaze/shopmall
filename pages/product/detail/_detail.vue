@@ -20,12 +20,13 @@
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
                   <div class="body-2"><pre><v-rating
-                                              empty-icon="$mdiStarOutline"
-                                              full-icon="$mdiStar"
-                                              half-icon="$mdiStarHalfFull"
-                                              hover
+                                              color="yellow darken-3"
+                                              background-color="grey darken-1"
+                                              empty-icon="$ratingFull"
+                                              half-increments
+                                              readonly
                                               length="5"
-                                              size="64"
+                                              size="10"
                                               value="{{ productRating }}"
                                             ></v-rating></pre></div>
                 </v-card-text>
