@@ -193,6 +193,8 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
     })
     for(let i of usersDoc) {
       let userBuyHistory = i.userBuyHistory
+      console.log(i.userId)
+      console.log(userBuyHistory)
       if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
       else {
         for(let j of userBuyHistory) {
