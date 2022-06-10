@@ -5,7 +5,7 @@
         <v-list>
           <v-subheader>구매 내역</v-subheader>
           <template v-for="(listItem, index) in listItems">
-            <span v-if="administrator">{{ listItem.userId }}</span>
+            <span v-if="administrator">{{ usersId[i] }}</span>
             <v-list-item :key="index" @click="goDetail(listItem.productCode)">
               <v-list-item-avatar><v-img :src="listItem.productImgs[0]"></v-img></v-list-item-avatar>
               <v-list-item-content><v-list-item-title> {{ listItem.productTitle }} </v-list-item-title></v-list-item-content>
@@ -31,7 +31,12 @@ export default {
     let { status, data } = await $axios.get('/api/product/purchase-productinfo')
     if(status === 202) return { listItems: null, administrator: isAdmin }
     else{
-      return { listItems: data.reverse(), administrator: isAdmin }
+      if(isAdmin) {
+        return { listItems: data.purchasedHistoryProducts.reverse(), usersId: data.purchasedHistoryUsers.reverse(), administrator: isAdmin }
+      }
+      else {
+        return { listItems: data.reverse(), administrator: isAdmin }
+      }
     }
   },
   
