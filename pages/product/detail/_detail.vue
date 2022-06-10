@@ -17,18 +17,17 @@
               <v-card>
                 <v-card-title>{{ productDetail.productTitle }}</v-card-title>
                 <v-card-text>
+                  <div><pre><v-rating
+                              color="yellow darken-3"
+                              background-color="grey darken-1"
+                              empty-icon="$ratingFull"
+                              half-increments
+                              readonly
+                              size="10"
+                              value="{{ productRating }}"
+                            ></v-rating></pre></div>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
-                  <div class="body-2"><pre><v-rating
-                                              color="yellow darken-3"
-                                              background-color="grey darken-1"
-                                              empty-icon="$ratingFull"
-                                              half-increments
-                                              readonly
-                                              length="5"
-                                              size="10"
-                                              value="{{ productRating }}"
-                                            ></v-rating></pre></div>
                 </v-card-text>
                 <v-text-field v-model="quantity" class="mx-4" label="수량" max="50" min="1" step="1" style="width: 125px" type="number"></v-text-field>
                 <v-text-field v-model="waistsize" class="mx-4" label="허리 사이즈" max="50" min="1" step="1" style="width: 125px" type="number"></v-text-field>
