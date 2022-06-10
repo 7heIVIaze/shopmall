@@ -184,12 +184,13 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
     await UserModel.find(function(err, users) {
       if(err) console.log(err)
       else {
+        console.log('user find function start')
         users.forEach(function(element) {
+          console.log(element.userId)
           usersDoc.push(element)
         })
       } 
     })
-    console.log(usersDoc.userId)
     for( let i of usersDoc ) {
       let userBuyHistory = i.userBuyHistory
       if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
@@ -201,8 +202,8 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
           found.productCode = j  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
           purchasedHistoryProducts.push(found)
         }
+        res.status(200).send(purchasedHistoryProducts)
       }
-      res.status(200).send(purchasedHistoryProducts)
     }
   }
   else {
