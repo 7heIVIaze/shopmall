@@ -131,7 +131,7 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   async asyncData({ params, store, $axios }){
     let { data } = await $axios.get(`/api/product/detail/${params.detail}`)
-    let comments, sum = await $axios.get(`/api/comment/list/${params.detail}`)  // 댓글이 없을 경우 comments.data = []
+    let { comments, sum } = await $axios.get(`/api/comment/list/${params.detail}`)  // 댓글이 없을 경우 comments.data = []
     if(comments.data && comments.data.length !== 0) comments.data.productComment = comments.data.reverse()
     return { productDetail: data, productComment: comments.data, totalreview: sum }
   },
