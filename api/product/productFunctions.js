@@ -178,17 +178,36 @@ productFunctions.detailProduct = async function(productCode, res, userIndex){
 // 세션 유저가 구매한 상품들의 정보 응답
 productFunctions.purchaseProductInfo = async function(userIndex, res){
   let userDoc = await UserModel.findById(userIndex).catch(e=> console.log('purchaseProductInfo function error'))
-  let userBuyHistory = userDoc.userBuyHistory
   let purchasedHistoryProducts = []
-  if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
-  else{
-    for(let i of userBuyHistory){
-      let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode')
-      found.productImgs = await thumbnailDataURI_generator(found.productCode)
-      found.productCode = i  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
-      purchasedHistoryProducts.push(found)
+  if(userDoc.administrator) {
+    let { usersDoc } = await UserModel.find({})
+    for( let i of usersDoc ) {
+      let userBuyHistory = i.userBuyHistory
+      if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
+      else {
+        purchasedHistoryProducts.push(i.userId)
+        for(let j of userBuyHistory) {
+          let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode')
+          found.productImgs = await thumbnailDataURI_generator(found.productCode)
+          found.productCode = j  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
+          purchasedHistoryProducts.push(found)
+        }
+      }
+      res.status(200).send(purchasedHistoryProducts)
     }
-    res.status(200).send(purchasedHistoryProducts)
+  }
+  else {
+    let userBuyHistory = userDoc.userBuyHistory
+    if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
+    else{
+      for(let i of userBuyHistory){
+        let found = await ProductModel.findOne({productCode: i.substring(0, i.indexOf('_'))}).select('productImgs productTitle productCode')
+        found.productImgs = await thumbnailDataURI_generator(found.productCode)
+        found.productCode = i  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
+        purchasedHistoryProducts.push(found)
+      }
+      res.status(200).send(purchasedHistoryProducts)
+    }
   }
 }
 
