@@ -67,7 +67,7 @@
                         hover
                         large
                       ></v-rating></span>
-                <span><v-btn style="flex:left;" @click:append-outer="commentSubmit"><v-icon>mdi-send</v-icon></v-btn></span>
+                <span><v-btn style="flex:left;" @click:append-outer="commentSubmit(commentStr, rating)"><v-icon>mdi-send</v-icon></v-btn></span>
               </v-container>
             </v-card>
           </v-col>
@@ -191,14 +191,14 @@ export default {
       return yyyy + '.' + (mm[1] ? mm : '0'+mm[0]) + '.' + (dd[1] ? dd : '0'+dd[0]) + ` ${hours}:${minutes}:${seconds}`
     },
 
-    async commentSubmit(){
+    async commentSubmit(commentStr, rating){
       let commentStrTrimmed = this.commentStr.trim()
       if(!commentStrTrimmed || commentStrTrimmed.length === 0) alert('상품의견을 적어주세요')
       else if(!this.rating) alert('별점 리뷰를 체크해주세요')
       else{
         let date = new Date()
         let commentDate = await this.dateWithTime(date)
-        let { status } = await this.$axios.post('/api/comment/add', { productCode: this.productDetail.productCode, commentDate: commentDate, commentStr: this.commentStr,  commentRating: this.rating })
+        let { status } = await this.$axios.post('/api/comment/add', { productCode: this.productDetail.productCode, commentDate: commentDate, commentStr: commentStr,  commentRating: rating })
         if(status === 200) window.location.reload(true)
         else alert('상품의견 등록 실패')
       }
