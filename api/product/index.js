@@ -5,7 +5,10 @@ const productUpload = require('./productMulter')
 // 상품 추가
 router.post('/add', productUpload.array('files'), (req, res, next) => {
   let productImgs = []
-  for(let i of req.files) productImgs.push(i.filename)
+  for(let i of req.files) {
+    console.log(i.location)
+    productImgs.push(i.filename)
+  }
   let productAddForm = JSON.parse(req.body.productAddForm)
   const { productTitle, productDescription, productPrice, productCode, productQuantity, productHashTag } = productAddForm
   productFunctions.addProduct(productImgs, productTitle, productDescription, productPrice, productCode, productQuantity, productHashTag, res)
