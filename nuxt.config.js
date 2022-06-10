@@ -48,21 +48,8 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    'bootstrap-vue/nuxt',
   ],
 
-  bootstrapVue : {
-    componentPlugins: [
-      'LayoutPlugin',
-      'FormPlugin',
-      'FormCheckboxPlugin',
-      'FormInputPlugin',
-      'FormRadioPlugin',
-      'ToastPlugin',
-      'ModalPlugin'
-    ],
-    directivePlugins: ['VBPopoverPlugin', 'VBTooltipPlugin', 'VBScrollspyPlugin']
-  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
