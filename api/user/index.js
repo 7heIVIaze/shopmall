@@ -55,6 +55,11 @@ router.get('/session-userinfo', async (req, res, next) => {
       userMoney: req.user.userMoney,
       userFavorites: req.user.userFavorites,
       userCarts: req.user.userCarts,
+      userName: req.user.userName,
+      userNumber: req.user.userNumber,
+      userZonecode: req.user.userZonecode,
+      userRoadAddress: req.user.userRoadAddress,
+      userDetailAddress: req.user.userDetailAddress,
     }
     res.status(200).json(userInfo)  // 세션이 존재하면, 해당 세션의 유저 정보를 보내줌.
   }
@@ -63,7 +68,6 @@ router.get('/session-userinfo', async (req, res, next) => {
 
 // 관리자 세션 체크
 router.get('/session-administrator', async(req, res, next) => {
-  console.log('/session-administrator: ', req.user)
   if(req.user.administrator) res.sendStatus(200)
   else res.sendStatus(202)
 })

@@ -5,7 +5,7 @@
         <v-list>
           <v-subheader>구매 내역</v-subheader>
           <template v-for="(listItem, index) in listItems">
-            <span v-if="userInfo.administrator">{{ listItem.userId }}</span>
+            <span v-if="administrator">{{ listItem.userId }}</span>
             <v-list-item :key="index" @click="goDetail(listItem.productCode)">
               <v-list-item-avatar><v-img :src="listItem.productImgs[0]"></v-img></v-list-item-avatar>
               <v-list-item-content><v-list-item-title> {{ listItem.productTitle }} </v-list-item-title></v-list-item-content>
@@ -25,17 +25,14 @@ export default {
   middleware: 'pageGuard',
 
   async asyncData ({ params, req, $axios }) {
+    let { adminstatus } = await $axios.get('/api/user/session-administrator')
+    let isAdmin = false
+    if(adminstatus === 200) isAdmin = true
     let { status, data } = await $axios.get('/api/product/purchase-productinfo')
-    if(status === 202) return { listItems: null }
+    if(status === 202) return { listItems: null, administrator: isAdmin }
     else{
-      return { listItems: data.reverse() }
+      return { listItems: data.reverse(), administrator: isAdmin }
     }
-  },
-  async asyncData ({ params, req, $axios, redirect }) {
-    let { status } = await $axios.get('/api/user/session-administrator')
-    if(status === 200) return { userInfo: data }
-    let { data } = await $axios.get('/api/user/session-userinfo')
-    return { userInfo: data }
   },
   
   data: () => ({

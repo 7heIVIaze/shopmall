@@ -27,17 +27,23 @@
   </v-layout>
 </template>
 
+
+<!-- jQuery -->
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script> -->
+<!-- iamport.payment.js -->
+<!-- <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script> -->
 <script>
 export default {
   middleware: 'pageGuard',
 
   async asyncData ({ params, req, $axios }) {
+    let { userdata } = await $axios.get('/api/user/session-userinfo')
     let { status, data } = await $axios.get('/api/product/cart-productinfo')
     if(status === 202) return { listItems: null }
     else{
       let sum = 0
       for(let i of data) sum += i.productPrice
-      return { listItems: data, sum: sum }
+      return { listItems: data, sum: sum, userdata: userdata }
     }
   },
 
@@ -53,6 +59,49 @@ export default {
       money.replace(/,/gi, '')
       return Number(money).toLocaleString()
     },
+
+    // async allBuy(){
+    //   // 가맹점 식별
+    //   const { IMP } = window
+    //   IMP.init(process.env.SHOP_NAME)
+
+    //   // 결제 데이터 정의하기
+    //   let productCodeList = []
+    //   for(let i of this.listItems) productCodeList.push(`${i.productCode}_1_${buyDate}`)
+    //   let { status } = await this.$axios.post('/api/user/allbuy', { productCodeList: productCodeList, sum: this.sum })
+    //   const data = {
+    //     pg: 'html5-inicis',                                                          // PG사(KG이니시스로 설정함)
+    //     pay_method: 'card',                                                          // 결제 수단
+    //     merchant_uid: `mid_${new Date().getTime()}`,                                 // 주문 번호
+    //     amount: this.sum,                                                            // 결제 금액
+    //     name: productCodeList,                                                       // 주문명
+    //     buyer_name: this.userdata.userName,                                          // 구매자 이름
+    //     buyer_tel: this.userdata.userNumber,                                         // 구매자 전화번호
+    //     buyer_addr: this.userdata.userRoadAddress+this.userdata.userDetailAddress,   // 구매자 주소
+    //     buyer_postcode: this.userdata.userZonecode,                                  // 구매자 우편번호
+        
+    //   }
+
+    //   // 결제 창 호출
+    //   IMP.request_pay(data, this.callback)
+    // },
+    // // 콜백 함수 정의
+    // callback(response) {
+    //   const {
+    //     success,
+    //     merchant_uid,
+    //     error_msg,
+        
+    //   } = response
+
+    //   if(sucess) {
+    //     alert('모두 구입 완료')
+    //     window.location.reload(true)
+    //   }
+    //   else {
+    //     alert(`결제 실패: ${error_msg}`)
+    //   }
+    // },
     async allBuy(){
       let date = new Date()
       let buyDate = await this.dateForm(date)
