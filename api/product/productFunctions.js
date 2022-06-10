@@ -186,8 +186,8 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
       else {
         console.log('user find function start')
         users.forEach(function(element) {
-          console.log(element.userId)
-          usersDoc.push(element.userId)
+          console.log(element)
+          usersDoc.push(element)
         })
       }
     })
