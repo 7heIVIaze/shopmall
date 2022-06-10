@@ -19,6 +19,15 @@
                 <v-card-text>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
+                  <div class="body-2"><pre><v-rating
+                                              empty-icon="$mdiStarOutline"
+                                              full-icon="$mdiStar"
+                                              half-icon="$mdiStarHalfFull"
+                                              hover
+                                              length="5"
+                                              size="64"
+                                              value="{{ productRating }}"
+                                            ></v-rating></pre></div>
                 </v-card-text>
                 <v-text-field v-model="quantity" class="mx-4" label="수량" max="50" min="1" step="1" style="width: 125px" type="number"></v-text-field>
                 <v-text-field v-model="waistsize" class="mx-4" label="허리 사이즈" max="50" min="1" step="1" style="width: 125px" type="number"></v-text-field>
@@ -49,7 +58,15 @@
             <v-card v-if="isLogin">
               <v-container>
                 <span><v-text-field v-model="commentStr" label="상품의견" prepend-icon="mdi-comment" clearable></v-text-field></span>
-                <span><b-form-rating v-model="rating"></b-form-rating></span>
+                <span><v-rating
+                        v-model="rating"
+                        color="yellow darken-3"
+                        background-color="grey darken-1"
+                        empty-icon="$ratingFull"
+                        half-increments
+                        hover
+                        large
+                      ></v-rating></span>
                 <span><v-btn style="flex:left;" @click:append-outer="commentSubmit"><v-icon>mdi-send</v-icon></v-btn></span>
               </v-container>
             </v-card>
@@ -114,7 +131,7 @@ export default {
     waistsize: '',
     leglength: '',
     commentStr: '',
-    rating: null,
+    rating: 4.5,
   }),
 
   methods: {

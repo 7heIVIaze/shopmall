@@ -32,6 +32,7 @@ productFunctions.addProduct = async function(productImgs, productTitle, productD
     productHeartColor: 'white',
     productCartColor: 'white',
     productCarousel: false,
+    productRating: 0,
   })
   await product.save(function(err) {
     if(err) console.log('addProduct function error')
