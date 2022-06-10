@@ -180,7 +180,16 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
   let userDoc = await UserModel.findById(userIndex).catch(e=> console.log('purchaseProductInfo function error'))
   let purchasedHistoryProducts = []
   if(userDoc.administrator) {
-    let { usersDoc } = await UserModel.find({})
+    let usersDoc = []
+    await UserModel.find(function(err, users) {
+      if(err) console.log(err)
+      else {
+        users.forEach(function(element) {
+          usersDoc.push(element)
+        })
+      } 
+    })
+    console.log(usersDoc.userId)
     for( let i of usersDoc ) {
       let userBuyHistory = i.userBuyHistory
       if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
