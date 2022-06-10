@@ -5,8 +5,8 @@ const commentFunctions = require('./commentFunctions')
 router.post('/add', (req, res, next) => {
   const userId = req.user.userId
   const userAvatar = req.user.userAvatar
-  const { productCode, commentDate, commentStr } = req.body
-  commentFunctions.addComment(productCode, userAvatar, userId, commentDate, commentStr, res)
+  const { productCode, commentDate, commentStr, commentRating } = req.body
+  commentFunctions.addComment(productCode, userAvatar, userId, commentDate, commentStr, commentRating, res)
 })
 
 // 해당 상품의 상품의견 리스트
