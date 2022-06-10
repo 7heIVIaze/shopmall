@@ -15,10 +15,11 @@ commentFunctions.addComment = async function(productCode, userAvatar, userId, co
     commentContent: commentStr,
     commentRating: commentRating
   })
-  let product = await ProductModel.findOne({productCode: productCode}).select('productRating').catch(e => console.log('addComment product findOne error'))
-  let cnt = 1
+  let cnt = 0
   let productRating = 0
+  let product = await ProductModel.findOne({productCode: productCode}).select('productRating').catch(e => console.log('addComment product findOne error'))
   await CommentModel.countDocuments({ productCode: productCode }, function(err, count) {
+    if(err) console.error('commentcount error')
     cnt = count
   })
   if(cnt > 1) productRating = (product.productRating * (cnt - 1) + commentRating)/cnt
