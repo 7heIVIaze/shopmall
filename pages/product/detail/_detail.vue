@@ -24,8 +24,8 @@
                               half-increments
                               readonly
                               size="10"
-                              value="{{ productRating }}"
-                            ></v-rating></pre></div>
+                              value="{{ productDetail.productRating }}"
+                            >{{ productDetail.productRating }}</v-rating></pre></div>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
                 </v-card-text>
