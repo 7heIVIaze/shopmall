@@ -192,12 +192,15 @@ productFunctions.purchaseProductInfo = async function(userIndex, res){
       }
     })
     for(let i of usersDoc) {
+      if(i._id === userIndex) continue
       let userBuyHistory = i.userBuyHistory
       console.log(i.userId)
       console.log(userBuyHistory)
       if(!userBuyHistory || userBuyHistory.length === 0) res.sendStatus(202)
       else {
         for(let j of userBuyHistory) {
+          console.log('for loop')
+          console.log(j)
           let found = await ProductModel.findOne({productCode: j.substring(0, j.indexOf('_'))}).select('productImgs productTitle productCode')
           found.productImgs = await thumbnailDataURI_generator(found.productCode)
           found.productCode = j  // 상품 구매 개수 및 구입 날짜 포함된 코드로 할당
