@@ -23,9 +23,10 @@
                               empty-icon="$ratingFull"
                               half-increments
                               readonly
-                              size="10"
-                              value=productDetail.productRating
-                            ></v-rating>{{ productDetail.productRating }}</pre></div>
+                              size="20"
+                              :value= "productDetail.productRating"
+                            ></v-rating></pre></div>
+                            <div style="float:flex;">{{ productDetail.productRating }}/5</div>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
                 </v-card-text>
@@ -89,8 +90,8 @@
                               half-increments
                               readonly
                               size="10"
-                              value=commentItem.commentRating
-                            ></v-rating>{{ commentItem.commentRating }}</span>
+                              :value="commentItem.commentRating"
+                            ></v-rating></span><span style="float:flex;">{{ commentItem.commentRating }}/5</span>
                             <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
