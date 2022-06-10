@@ -26,7 +26,9 @@
                               size="20"
                               :value= "productDetail.productRating"
                             ></v-rating></pre>
-                            <div>{{ productDetail.productRating }}/5</div>
+                            <div>{{ productDetail.productRating }} 
+                            <div>({{ totalreview }})</div>
+                            </div>
                     </v-row>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
@@ -138,6 +140,13 @@ export default {
     ...mapGetters([
       'isLogin',
     ]),
+    totalreview: function(){
+      let sum = 0
+      for(let i of productComment) {
+        sum += 1
+      }
+      return sum
+    }
   },
 
   data: () => ({
@@ -146,6 +155,7 @@ export default {
     leglength: '',
     commentStr: '',
     rating: 4.5,
+    reviewcnt: 0,
   }),
 
   methods: {
