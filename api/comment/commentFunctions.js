@@ -17,11 +17,11 @@ commentFunctions.addComment = async function(productCode, userAvatar, userId, co
   })
   let product = await ProductModel.findOne({productCode: productCode}).select('productRating').catch(e => console.log('addComment product findOne error'))
   let cnt = 1
+  let productRating = 0
   await ProductModel.countDocuments({ productCode: productCode }, function(err, count) {
     cnt = count
   })
-  if(cnt === 0) let productRating = 0
-  else let productRating = (product.productRating * (cnt - 1) + commentRating)/cnt
+  if(cnt !== 0) productRating = (product.productRating * (cnt - 1) + commentRating)/cnt
   await ProductModel.findOneAndUpdate({productCode: productCode}, {productRating: productRating}, {new: true}, function(err, result){  // 원래 findOneAndUpdate의 result는 수정되기 전의 상태(doc)이다. 하지만, 옵션에 { new: true }를 넣으면 수정 이후의 다큐먼트를 반환한다.
     if(err) console.log('addproudctRating function error')
     else if(!result) console.log('cannot found')
