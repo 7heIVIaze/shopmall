@@ -47,7 +47,22 @@ commentFunctions.getComment = async function(productCode, res){
          i.commentAvatar = await getUserAvatarDataURI(i.commentAvatar)
          sum += 1
       }
-      res.json({docs: docs, sum: sum})
+      res.send(docs)
+    }
+  })
+}
+
+// 해당 상품의 상품의견 갯수
+commentFunctions.getComment = async function(productCode, res){
+  let sum = 0
+  await CommentModel.find({commentProductCode: productCode}, async function(err, docs){
+    if(err) console.log('getComment function error')
+    else if(!docs) res.send(null)
+    else{
+      for(let i of docs) {
+         sum += 1
+      }
+      res.send(sum)
     }
   })
 }
