@@ -88,7 +88,7 @@
                       <v-list-item-subtitle>{{ commentItem.commentUserId }} 
                       <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-row><v-list-item-subtitle class="mx-0"> 
-                        <span class="grey--text text--lighten-2 text-caption mr-2">{{ commentItem.commentRating }}/5</span>
+                        <span >{{ commentItem.commentRating }}/5</span>
                          <v-rating
                               color="yellow darken-3"
                               background-color="grey darken-1"
