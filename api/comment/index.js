@@ -18,7 +18,7 @@ router.get('/list/:productCode', (req, res, next) => {
 // 해당 상품의 상품의견 갯수
 router.get('/total/:productCode', (req, res, next) => {
   const productCode = req.params.productCode
-  commentFunctions.gettotal(productCode, res)
+  commentFunctions.getTotal(productCode, res)
 })
 
 module.exports = router

@@ -53,7 +53,7 @@ commentFunctions.getComment = async function(productCode, res){
 }
 
 // 해당 상품의 상품의견 갯수
-commentFunctions.getComment = async function(productCode, res){
+commentFunctions.getTotal = async function(productCode, res){
   await CommentModel.countDocuments({commentProductCode: productCode}, async function(err, count){
     if(err) console.log('getComment function error')
     else res.send(count)
