@@ -28,7 +28,7 @@
                             ></v-rating></pre>
                             <div>{{ productDetail.productRating }} 
                             </div>
-                            <div>({{ totalreview }})</div>
+                            <div> ({{ totalreview }})</div>
                     </v-row>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
@@ -87,6 +87,7 @@
                     <v-list-item-avatar><v-img :src="commentItem.commentAvatar"></v-img></v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-subtitle>{{ commentItem.commentUserId }} 
+                      <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <div class="mx-0"><v-rating
                               color="yellow darken-3"
                               background-color="grey darken-1"
@@ -98,7 +99,6 @@
                             ></v-rating>
                       </div>
                       <div>{{ commentItem.commentRating }}/5</div>
-                      <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
