@@ -18,7 +18,7 @@ commentFunctions.addComment = async function(productCode, userAvatar, userId, co
   let cnt = 0
   let productRating = 0
   let product = await ProductModel.findOne({productCode: productCode}).select('productRating').catch(e => console.log('addComment product findOne error'))
-  await CommentModel.countDocuments({ productCode: productCode }, function(err, count) {
+  await CommentModel.countDocuments({ commentProductCode: productCode }, function(err, count) {
     if(err) console.error('commentcount error')
     cnt = count
   })
@@ -54,16 +54,9 @@ commentFunctions.getComment = async function(productCode, res){
 
 // 해당 상품의 상품의견 갯수
 commentFunctions.getComment = async function(productCode, res){
-  let sum = 0
-  await CommentModel.find({commentProductCode: productCode}, async function(err, docs){
+  await CommentModel.countDocuments({commentProductCode: productCode}, async function(err, count){
     if(err) console.log('getComment function error')
-    else if(!docs) res.send(null)
-    else{
-      for(let i of docs) {
-         sum += 1
-      }
-      res.send(sum)
-    }
+    else res.send(count)
   })
 }
 
