@@ -26,9 +26,9 @@
                               size="20"
                               :value= "productDetail.productRating"
                             ></v-rating></pre>
-                            <div>{{ productDetail.productRating + ' ' }}
+                            <div>{{ productDetail.productRating }}
                             </div>
-                            <div>({{ totalreview }})</div>
+                            <div>  ({{ totalreview }})</div>
                     </v-row>
                   <div><span class="title">{{ productDetail.productPrice }}</span><span>원</span><span style="float:right;">남은 수량 {{productDetail.productQuantity}} </span></div>
                   <div class="body-1"><pre>{{ productDetail.productDescription }}</pre> </div>
@@ -96,8 +96,7 @@
                               readonly
                               size="10"
                               :value="commentItem.commentRating"
-                            ></v-rating>
-                      <div>{{ commentItem.commentRating }}/5</div>
+                            >{{ commentItem.commentRating }}/5</v-rating>
                       </v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
