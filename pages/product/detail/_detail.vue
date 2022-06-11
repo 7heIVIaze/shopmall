@@ -87,7 +87,7 @@
                     <v-list-item-avatar><v-img :src="commentItem.commentAvatar"></v-img></v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-subtitle>{{ commentItem.commentUserId }} 
-                      <v-row class="mx-0"><v-rating
+                      <div class="mx-0"><v-rating
                               color="yellow darken-3"
                               background-color="grey darken-1"
                               empty-icon="$ratingFull"
@@ -97,7 +97,7 @@
                               :value="commentItem.commentRating"
                             ></v-rating>
                             <div>{{ commentItem.commentRating }}/5</div>
-                      </v-row>
+                      </div>
                             <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
@@ -134,7 +134,7 @@ export default {
     let comments = await $axios.get(`/api/comment/list/${params.detail}`)  // 댓글이 없을 경우 comments.data = []
     let sum = await $axios.get(`/api/comment/total/${params.detail}`)
     if(comments.data && comments.data.length !== 0) comments.data.productComment = comments.data.reverse()
-    return { productDetail: data, productComment: comments.data, totalreview: sum }
+    return { productDetail: data, productComment: comments.data, totalreview: sum.data }
   },
 
   computed: {
