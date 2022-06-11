@@ -59,7 +59,7 @@ commentFunctions.getTotal = async function(productCode, res){
       console.log(err)
       res.send(null)
     }
-    else res.send(count)
+    else res.send({count: count})
   })
 }
 
