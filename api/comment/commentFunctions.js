@@ -15,13 +15,10 @@ commentFunctions.addComment = async function(productCode, userAvatar, userId, co
     commentContent: commentStr,
     commentRating: commentRating
   })
-  let cnt = 0
   let productRating = 0
   let product = await ProductModel.findOne({productCode: productCode}).select('productRating').catch(e => console.log('addComment product findOne error'))
-  CommentModel.countDocuments({commentProductCode: productCode }, function(err, count) {
-    if(err) console.log(err)
-    else cnt = count
-  })
+  let cnt = await CommentModel.countDocuments({commentProductCode: productCode })
+  if(!cnt) cnt = 1
   if(cnt > 1) productRating = (product.productRating * (cnt - 1) + commentRating)/cnt
   else productRating += commentRating
   console.log(productRating)
@@ -54,13 +51,12 @@ commentFunctions.getComment = async function(productCode, res){
 
 // 해당 상품의 상품의견 갯수
 commentFunctions.getTotal = async function(productCode, res){
-  CommentModel.countDocuments({commentProductCode: productCode}, function(err, count) {
-    if(err) {
-      console.log(err)
-      res.send(null)
-    }
-    else res.send({count: count})
-  })
+  let count = await CommentModel.countDocuments({commentProductCode: productCode})
+  if(!count) {
+    console.log('non')
+    res.send(null)
+  }
+  else res.send(count)
 }
 
 // 유저 프로필 이미지 DataURI 생성
