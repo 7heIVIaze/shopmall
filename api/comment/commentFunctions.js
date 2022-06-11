@@ -1,7 +1,19 @@
 const CommentModel = require('./commentDB')
 const ProductModel = require('../product/productDB')
-
 const fs = require('fs')
+const AWS = require('aws-sdk')
+const multerS3 = require('multer-s3')
+require('dotenv').config()
+
+const bucket = process.env.S3_BUCKET_NAME
+
+AWS.config.update({
+  apiVersion: '2006-03-01',
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: process.env.S3_REGION,
+})
+const s3 = new AWS.S3()
 
 const commentFunctions = {}
 
@@ -63,14 +75,16 @@ commentFunctions.getTotal = async function(productCode, res){
 async function getUserAvatarDataURI(userAvatarImgName){
   userAvatarImgName += ''
   let imgNameWithoutExt = userAvatarImgName.substring(0, userAvatarImgName.lastIndexOf('.'))
+  let userAvatarDataURI = `https://${bucket}.s3.ap-northeast-2.amazonaws.com/userImages/${imgNameWithoutExt}/${userAvatarImgName}`
+  return userAvatarDataURI
 
-  let dirPath = 'uploads/userImages/' + imgNameWithoutExt
-  let mimetypeStr = userAvatarImgName.substring(userAvatarImgName.lastIndexOf('.'),)
-  if(fs.existsSync(dirPath)){  // 파일이나 폴더가 존재하는지 파악
-    let base64Data = fs.readFileSync(`${dirPath}/${userAvatarImgName}`, 'base64')     //파일 자체를 base64로 읽어들인다.
-    let userAvatarDataURI = `data:image/${mimetypeStr};base64,${base64Data}`
-    return userAvatarDataURI
-  }
+  // let dirPath = 'uploads/userImages/' + imgNameWithoutExt
+  // let mimetypeStr = userAvatarImgName.substring(userAvatarImgName.lastIndexOf('.'),)
+  // if(fs.existsSync(dirPath)){  // 파일이나 폴더가 존재하는지 파악
+  //   let base64Data = fs.readFileSync(`${dirPath}/${userAvatarImgName}`, 'base64')     //파일 자체를 base64로 읽어들인다.
+  //   let userAvatarDataURI = `data:image/${mimetypeStr};base64,${base64Data}`
+  //   return userAvatarDataURI
+  // }
 }
 
 module.exports = commentFunctions
