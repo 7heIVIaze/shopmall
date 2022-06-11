@@ -87,7 +87,9 @@
                     <v-list-item-content>
                       <v-list-item-subtitle>{{ commentItem.commentUserId }} 
                       <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
-                      <v-row><v-list-item-subtitle class="mx-0"><pre><v-rating
+                      <v-row><v-list-item-subtitle class="mx-0"> 
+                        <span class="grey--text text--lighten-2 text-caption mr-2">{{ commentItem.commentRating }}/5</span>
+                         <v-rating
                               color="yellow darken-3"
                               background-color="grey darken-1"
                               empty-icon="$ratingFull"
@@ -95,8 +97,8 @@
                               readonly
                               size="10"
                               :value="commentItem.commentRating"
-                            ></v-rating></pre>
-                            <span class="grey--text text--lighten-2 text-caption mr-2">{{ commentItem.commentRating }}/5</span>
+                            ></v-rating>
+                           
                       </v-list-item-subtitle></v-row>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
