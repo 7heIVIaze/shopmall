@@ -68,7 +68,7 @@ commentFunctions.getTotal = async function(productCode, res){
   }
   else {
     console.log('sendding...')
-    res.send(count)
+    res.send(count+'')
   }
 }
 
