@@ -86,7 +86,6 @@
                     <v-list-item-avatar><v-img :src="commentItem.commentAvatar"></v-img></v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-subtitle>{{ commentItem.commentUserId }} 
-                      <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-row>
                       <v-list-item-subtitle class="mx-0"><v-rating
                               color="yellow darken-3"
@@ -100,6 +99,7 @@
                             <span style="float:flex;">{{ commentItem.commentRating }}/5</span>
                       </v-list-item-subtitle>
                       </v-row>
+                      <span style="float:right;">{{ commentItem.commentDate }}</span></v-list-item-subtitle>
                       <v-list-item-title><pre>{{ commentItem.commentContent }}</pre></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
